@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   List _features = new List();
 
   int radioValue = 0;
-  
+
   _HomeState() {
     getQuakes().then((val) {
       setState(() {
@@ -54,6 +54,12 @@ class _HomeState extends State<Home> {
         break;
       default:
     }
+    getQuakes().then((val) {
+      setState(() {
+        _data = val;
+        _features = _data['features'];
+      });
+    });
   }
 
   @override
@@ -65,7 +71,8 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: new Container(
-        padding: new EdgeInsets.only(top: 30.0),
+        // padding: new EdgeInsets.only(top: 30.0),
+        
         child: new Column(
           children: <Widget>[
             new Padding(
@@ -77,17 +84,22 @@ class _HomeState extends State<Home> {
                   value: 0,
                   groupValue: radioValue,
                   onChanged: handleRadioValueChanged,
+                  activeColor: Colors.white,
                 ),
                 new Text("Past Hour"),
                 new Radio<int>(
-                    value: 1,
-                    groupValue: radioValue,
-                    onChanged: handleRadioValueChanged),
+                  value: 1,
+                  groupValue: radioValue,
+                  onChanged: handleRadioValueChanged,
+                  activeColor: Colors.white,
+                ),
                 new Text("Past Day"),
                 new Radio<int>(
-                    value: 2,
-                    groupValue: radioValue,
-                    onChanged: handleRadioValueChanged),
+                  value: 2,
+                  groupValue: radioValue,
+                  onChanged: handleRadioValueChanged,
+                  activeColor: Colors.white,
+                ),
                 new Text("Past Week"),
               ],
             ),
@@ -98,10 +110,46 @@ class _HomeState extends State<Home> {
               child: new Text("Show Map"),
               onPressed: showMap,
             ),
+            new Padding(padding: const EdgeInsets.all(10.0)),
+            new Flexible(
+              child: new ListView.builder(itemBuilder: (_, index) {
+                return quakeCard(_, index);
+              }),
+            ),
           ],
         ),
       ),
+      backgroundColor: Colors.blue,
     );
+  }
+
+  Card quakeCard(BuildContext context, int i) {
+    if (_features.length != 0) {
+      var mag = _features[i]['properties']['mag'];
+      return new Card(
+        color: Colors.white,
+        child: new Column(
+          children: <Widget>[
+            new ListTile(
+              leading: new Opacity(
+                opacity: mag / 10,
+                child: new CircleAvatar(
+                  backgroundColor: Colors.red[900],
+                  child: new Text(
+                    mag.toString(),
+                    style: new TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+              title: new Text("Magnitude: ${mag.toString()}"),
+              subtitle: new Text(_features[i]['properties']['place']),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return new Card();
+    }
   }
 
   void showMap() {
@@ -118,7 +166,7 @@ class _HomeState extends State<Home> {
       mapViewType: MapViewType.normal,
       showUserLocation: true,
       initialCameraPosition:
-          new CameraPosition(new Location(45.5235258, -122.6732493), 14.0),
+          new CameraPosition(new Location(45.5235258, -122.6732493), 1.0),
       title: "Earthquake Data Mapper",
     );
   }
@@ -128,9 +176,9 @@ class _HomeState extends State<Home> {
       setState(() {
         _mapView.addMarker(new Marker(
             i.toString(),
-            list[i]['properties']['place'],
-            list[i]['geometry']['coordinates'][0],
-            list[i]['geometry']['coordinates'][1]));
+            "Mag: ${list[i]['properties']['mag']} | ${list[i]['properties']['place']}",
+            list[i]['geometry']['coordinates'][1],
+            list[i]['geometry']['coordinates'][0]));
       });
     }
   }
