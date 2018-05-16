@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 var apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 String _apiRange = "day";
@@ -169,10 +169,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           new Padding(padding: const EdgeInsets.all(10.0)),
           new Flexible(
             child: new ListView.builder(
-              itemCount: _features.length,
-              itemBuilder: (_, index) {
-              return quakeCard(_, index);
-            }),
+                itemCount: _features.length,
+                itemBuilder: (_, index) {
+                  return quakeCard(_, index);
+                }),
           ),
         ],
       ),
@@ -193,18 +193,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: new Column(
         children: <Widget>[
           new ListTile(
-            leading: new Opacity(
-              opacity: mag / 10,
-              child: new CircleAvatar(
-                backgroundColor: Colors.red[900],
-                child: new Text(
-                  mag.toString(),
-                  style: new TextStyle(color: Colors.black),
+            leading: new CircleAvatar(
+              backgroundColor: Color.fromRGBO(255, 0, 0, mag / 10),
+              child: new Text(
+                mag.toString(),
+                style: new TextStyle(
+                  color: Colors.black,
                 ),
               ),
             ),
             title: new Text("Magnitude: ${mag.toString()}"),
-            subtitle: new Text(_features[i]['properties']['place']),
+            subtitle: new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                new Text(_getTime(i)),
+                new Text(_features[i]['properties']['place'].toString()),
+              ],
+            ),
           ),
         ],
       ),
@@ -240,6 +245,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             list[i]['geometry']['coordinates'][0]));
       });
     }
+  }
+
+  String _getTime(int index) {
+    int milliseconds =
+        (int.parse(_features[index]['properties']['time'].toString()));
+    DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    var format = new DateFormat.yMd().add_jm();
+    return format.format(date);
   }
 }
 
