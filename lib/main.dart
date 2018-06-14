@@ -41,6 +41,7 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 16.0),
               ),
               headerCard(),
+              mostSigCard(),
             ],
           ),
         ),
@@ -66,14 +67,12 @@ class _HomeState extends State<Home> {
           new Container(
             child: new Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Container(
-                  child: new Text(
-                    "Earthquakes today",
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w300),
-                  ),
+                new Text(
+                  "Earthquakes today",
+                  style: new TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.w300),
                 ),
                 new ButtonTheme.bar(
                   child: ButtonBar(
@@ -96,6 +95,93 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget mostSigCard() {
+    return new Card(
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          new Row(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: new Text(
+                      "Most Significant",
+                      style: new TextStyle(
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ),
+                  new Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: new Text(
+                      "Magnitude 2.29",
+                      style: new TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  new Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: new Text(
+                      "6/13/2018 9:25 PM",
+                      style: new TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  new Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: new Text(
+                      "4km SW of Volcano, Hawaii",
+                      style: new TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              new Expanded(
+                child: new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Container(
+                      color: Colors.green,
+                      child: new FittedBox(
+                        fit: BoxFit.contain,
+                        child: new Image.asset("images/cracks.jpg"),
+                      )),
+                ),
+              ),
+            ],
+          ),
+          new ButtonTheme.bar(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.end,
+              children: <Widget>[
+                new FlatButton(
+                  child: new Text(
+                    "View",
+                  ),
+                  onPressed: () {
+                    print("pressed");
+                    setState(() {
+                      earthquakeData.showMap();
+                    });
+                  },
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
