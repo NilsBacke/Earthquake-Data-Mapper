@@ -209,6 +209,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: new Column(
         children: <Widget>[
           new ListTile(
+            onTap: () => showMapAtMarker(i.toString()),
             leading: new CircleAvatar(
               backgroundColor:
                   Color.fromRGBO(255, 0, 0, getOpacityFromMag(mag)),
@@ -233,12 +234,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
+<<<<<<< HEAD
   void _showMap() {
     _mapView.show(_getMapOptions(),
         toolbarActions: [new ToolbarAction("Refresh", 1)]);
+=======
+  void showMap() {
+    _mapView.show(_getMapOptions());
+>>>>>>> a72587e62acc3f6bb1add557548dede98eb0b61d
     _mapView.onMapReady.listen((_) {
       _setMarkers(_features);
       _mapView.zoomToFit(padding: 1000);
+    });
+  }
+
+  void showMapAtMarker(String id) {
+    _mapView.show(_getMapOptions());
+    _mapView.onMapReady.listen((_) {
+      _setMarkers(_features);
+      _mapView.zoomTo([id]);
     });
   }
 
@@ -266,7 +280,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   String _getTime(int index) {
     int milliseconds =
-        (int.parse(_features[index]['properties']['time'].toString()));
+        int.parse(_features[index]['properties']['time'].toString());
     DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
     var format = new DateFormat.yMd().add_jm();
     return format.format(date);
