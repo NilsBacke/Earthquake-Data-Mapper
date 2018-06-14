@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
@@ -99,7 +100,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       home: new Scaffold(
         appBar: new AppBar(
           title: new Text("Earthquake Data Mapper"),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.red,
           centerTitle: true,
           bottom: new TabBar(
             controller: _tabController,
@@ -120,7 +121,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ],
           controller: _tabController,
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.red,
       ),
     );
   }
@@ -128,6 +129,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget getTabView() {
     return new Container(
       // padding: new EdgeInsets.only(top: 30.0),
+      decoration: new BoxDecoration(
+        image: new DecorationImage(
+          image: new AssetImage("images/lava.jpg"),
+          fit: BoxFit.cover
+        ),
+      ),
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -142,21 +149,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 onChanged: _handleRadioValueChanged,
                 activeColor: Colors.white,
               ),
-              new Text("Past Hour"),
+              new Text(
+                "Past Hour",
+                style: new TextStyle(color: Colors.white),
+              ),
               new Radio<int>(
                 value: 1,
                 groupValue: radioValue,
                 onChanged: _handleRadioValueChanged,
                 activeColor: Colors.white,
               ),
-              new Text("Past Day"),
+              new Text(
+                "Past Day",
+                style: new TextStyle(color: Colors.white),
+              ),
               new Radio<int>(
                 value: 2,
                 groupValue: radioValue,
                 onChanged: _handleRadioValueChanged,
                 activeColor: Colors.white,
               ),
-              new Text("Past Week"),
+              new Text(
+                "Past Week",
+                style: new TextStyle(color: Colors.white),
+              ),
             ],
           ),
           new Padding(
@@ -164,7 +180,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
           new RaisedButton(
             child: new Text("Show Map"),
-            onPressed: showMap,
+            onPressed: _showMap,
           ),
           new Padding(padding: const EdgeInsets.all(10.0)),
           new Flexible(
@@ -194,7 +210,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         children: <Widget>[
           new ListTile(
             leading: new CircleAvatar(
-              backgroundColor: Color.fromRGBO(255, 0, 0, mag / 10),
+              backgroundColor:
+                  Color.fromRGBO(255, 0, 0, getOpacityFromMag(mag)),
               child: new Text(
                 mag.toString(),
                 style: new TextStyle(
@@ -216,7 +233,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
-  void showMap() {
+  void _showMap() {
     _mapView.show(_getMapOptions(),
         toolbarActions: [new ToolbarAction("Refresh", 1)]);
     _mapView.onMapReady.listen((_) {
@@ -253,6 +270,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
     var format = new DateFormat.yMd().add_jm();
     return format.format(date);
+  }
+
+  double getOpacityFromMag(mag) {
+    return sqrt(10 * mag);
   }
 }
 
