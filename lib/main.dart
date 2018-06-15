@@ -16,24 +16,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   EarthquakeData earthquakeData = new EarthquakeData();
-  final _controller = new PageController();
 
-  final List<Widget> _pages = <Widget>[
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          size: 100.0,
-          style: FlutterLogoStyle.horizontal,
-          colors: Colors.green),
-    ),
-    new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: new FlutterLogo(
-          size: 100.0,
-          style: FlutterLogoStyle.horizontal,
-          colors: Colors.green),
-    ),
-  ];
+  // final List<Widget> _pages = <Widget>[
+  //   new ConstrainedBox(
+  //     constraints: const BoxConstraints.expand(),
+  //     child: new FlutterLogo(
+  //         size: 100.0,
+  //         style: FlutterLogoStyle.horizontal,
+  //         colors: Colors.green),
+  //   ),
+  //   new ConstrainedBox(
+  //     constraints: const BoxConstraints.expand(),
+  //     child: new FlutterLogo(
+  //         size: 100.0,
+  //         style: FlutterLogoStyle.horizontal,
+  //         colors: Colors.green),
+  //   ),
+  // ];
 
   @override
   void initState() {
@@ -54,12 +53,14 @@ class _HomeState extends State<Home> {
         ),
         body: new Container(
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new Padding(
                 padding: const EdgeInsets.only(top: 16.0),
               ),
               headerCard(),
-              pageView(),
+              horizontalCardList(),
             ],
           ),
         ),
@@ -118,21 +119,22 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget pageView() {
-    return new Card(
-      child: new PageView.builder(
-        physics: new AlwaysScrollableScrollPhysics(),
-        controller: _controller,
+  Widget horizontalCardList() {
+    return new Container(
+      height: 216.0,
+      child: new ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 3,
         itemBuilder: (BuildContext context, int i) {
-          return _pages[i % _pages.length];
+          return mostSigCard();
         },
       ),
     );
   }
 
-  static Widget mostSigCard() {
-    return new ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
+  Widget mostSigCard() {
+    return new Container(
+      width: 300.0,
       child: new Card(
         child: new Column(
           mainAxisSize: MainAxisSize.min,
