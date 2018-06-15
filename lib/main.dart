@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 16.0),
               ),
               headerCard(),
-              horizontalCardList(),
+              horizontalCardList(), // uncomment, save, then recomment
               expansionList(),
             ],
           ),
@@ -230,14 +230,25 @@ class EntryItem extends StatelessWidget {
 
   Widget _buildTiles(Entry root) {
     if (root.children.isEmpty) {
-      return new ListTile(
-        title: new Text(root.title),
+      return new Column(
+        children: <Widget>[
+          new ListTile(
+            title: new Text(root.title),
+          ),
+          new Divider(),
+        ],
       );
     }
-    return new ExpansionTile(
-      key: new PageStorageKey<Entry>(root),
-      title: new Text(root.title),
-      children: root.children.map(_buildTiles).toList(),
+
+    return new Column(
+      children: <Widget>[
+        new ExpansionTile(
+          key: new PageStorageKey<Entry>(root),
+          title: new Text(root.title),
+          children: root.children.map(_buildTiles).toList(),
+        ),
+        new Divider(),
+      ],
     );
   }
 
@@ -258,7 +269,7 @@ class Entry {
 // The entire multilevel list displayed by this app.
 final List<Entry> data = <Entry>[
   new Entry(
-    'Chapter A',
+    'Hour',
     <Entry>[
       new Entry(
         'Section A0',
@@ -273,14 +284,14 @@ final List<Entry> data = <Entry>[
     ],
   ),
   new Entry(
-    'Chapter B',
+    'Day',
     <Entry>[
       new Entry('Section B0'),
       new Entry('Section B1'),
     ],
   ),
   new Entry(
-    'Chapter C',
+    'Week',
     <Entry>[
       new Entry('Section C0'),
       new Entry('Section C1'),
