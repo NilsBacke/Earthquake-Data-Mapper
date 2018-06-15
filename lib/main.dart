@@ -16,6 +16,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   EarthquakeData earthquakeData = new EarthquakeData();
+  final _controller = new PageController();
+
+  final List<Widget> _pages = <Widget>[
+    new ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: new FlutterLogo(
+          size: 100.0,
+          style: FlutterLogoStyle.horizontal,
+          colors: Colors.green),
+    ),
+    new ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: new FlutterLogo(
+          size: 100.0,
+          style: FlutterLogoStyle.horizontal,
+          colors: Colors.green),
+    ),
+  ];
 
   @override
   void initState() {
@@ -41,7 +59,7 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 16.0),
               ),
               headerCard(),
-              mostSigCard(),
+              pageView(),
             ],
           ),
         ),
@@ -100,89 +118,104 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget mostSigCard() {
+  Widget pageView() {
     return new Card(
-      child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          new Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: new Text(
-                      "Most Significant",
-                      style: new TextStyle(
-                        fontSize: 24.0,
-                      ),
-                    ),
-                  ),
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: new Text(
-                      "Magnitude 2.29",
-                      style: new TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: new Text(
-                      "6/13/2018 9:25 PM",
-                      style: new TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                  new Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: new Text(
-                      "4km SW of Volcano, Hawaii",
-                      style: new TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              new Expanded(
-                child: new Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: new Container(
-                      color: Colors.green,
-                      child: new FittedBox(
-                        fit: BoxFit.contain,
-                        child: new Image.asset("images/cracks.jpg"),
-                      )),
-                ),
-              ),
-            ],
-          ),
-          new ButtonTheme.bar(
-            child: ButtonBar(
-              alignment: MainAxisAlignment.end,
+      child: new PageView.builder(
+        physics: new AlwaysScrollableScrollPhysics(),
+        controller: _controller,
+        itemBuilder: (BuildContext context, int i) {
+          return _pages[i % _pages.length];
+        },
+      ),
+    );
+  }
+
+  static Widget mostSigCard() {
+    return new ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: new Card(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            new Row(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                new FlatButton(
-                  child: new Text(
-                    "View",
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        "Most Significant",
+                        style: new TextStyle(
+                          fontSize: 24.0,
+                        ),
+                      ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        "Magnitude 2.29",
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        "6/13/2018 9:25 PM",
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        "4km SW of Volcano, Hawaii",
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                new Expanded(
+                  child: new Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Container(
+                        color: Colors.green,
+                        child: new FittedBox(
+                          fit: BoxFit.contain,
+                          child: new Image.asset("images/cracks.jpg"),
+                        )),
                   ),
-                  onPressed: () {
-                    print("pressed");
-                    setState(() {
-                      earthquakeData.showMap();
-                    });
-                  },
                 ),
               ],
             ),
-          )
-        ],
+            new ButtonTheme.bar(
+              child: ButtonBar(
+                alignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      "View",
+                    ),
+                    onPressed: () {
+                      print("pressed");
+                      // setState(() {
+                      //   earthquakeData.showMap();
+                      // });
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
