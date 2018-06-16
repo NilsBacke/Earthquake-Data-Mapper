@@ -1,6 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'data.dart';
+import 'expansionTile.dart';
+import 'package:http/http.dart' as http;
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
@@ -16,12 +20,43 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   EarthquakeData earthquakeData = new EarthquakeData();
+  List allHourEarthquakes = new List();
+  List allDayEarthquakes = new List();
+  List allWeekEarthquakes = new List();
+  List sigHourEarthquakes = new List();
+  List sigDayEarthquakes = new List();
+  List sigWeekEarthquakes = new List();
 
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      earthquakeData.init("all", "day");
+  _HomeState() {
+    getQuakes("all", "hour").then((val) {
+      setState(() {
+        allHourEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("all", "day").then((val) {
+      setState(() {
+        allDayEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("all", "week").then((val) {
+      setState(() {
+        allWeekEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("significant", "hour").then((val) {
+      setState(() {
+        sigHourEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("significant", "day").then((val) {
+      setState(() {
+        sigDayEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("significant", "week").then((val) {
+      setState(() {
+        sigWeekEarthquakes = earthquakeData.init(val);
+      });
     });
   }
 
@@ -59,7 +94,7 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           new Text(
-            "547",
+            allDayEarthquakes.length.toString(),
             textDirection: TextDirection.ltr,
             style: new TextStyle(
               fontSize: 75.0,
@@ -104,21 +139,32 @@ class _HomeState extends State<Home> {
   }
 
   Widget horizontalCardList() {
+    if (sigWeekEarthquakes.length == 0) {
+      return new Container(
+        height: 220.0,
+        width: 400.0,
+        child: new Center(
+          child: new Text("No Significant Earthquakes"),
+        ),
+        color: Colors.green,
+      );
+    }
     return new Container(
-      height: 250.0,
+      height: 220.0,
+      width: 400.0,
       child: new ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
+        itemCount: sigWeekEarthquakes.length,
         itemBuilder: (BuildContext context, int i) {
-          return mostSigCard();
+          return mostSigCard(i);
         },
       ),
     );
   }
 
-  Widget mostSigCard() {
+  Widget mostSigCard(int i) {
     return new Container(
-      width: 350.0,
+      width: 340.0,
       height: 220.0,
       child: new Card(
         child: new Column(
@@ -144,7 +190,7 @@ class _HomeState extends State<Home> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        "Magnitude 2.29",
+                        "Magnitude ${sigWeekEarthquakes[i].mag}",
                         style: new TextStyle(
                           fontSize: 14.0,
                         ),
@@ -174,11 +220,13 @@ class _HomeState extends State<Home> {
                   child: new Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: new Container(
-                        color: Colors.green,
-                        child: new FittedBox(
-                          fit: BoxFit.contain,
-                          child: new Image.asset("images/cracks.jpg"),
-                        )),
+                      color: Colors.green,
+                      // child: new FittedBox(
+                      //   fit: BoxFit.contain,
+                      //   child: new Image.asset("images/cracks.jpg"),
+                      // ),
+                      child: new Image.asset("images/lava.jpg"),
+                    ),
                   ),
                 ),
               ],
@@ -213,6 +261,7 @@ class _HomeState extends State<Home> {
       // margin: new EdgeInsets.all(20.0),
       child: new Card(
         child: new ListView.builder(
+          shrinkWrap: true,
           itemBuilder: (BuildContext context, int i) {
             return new EntryItem(data[i]);
           },
@@ -223,87 +272,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-class EntryItem extends StatelessWidget {
-  const EntryItem(this.entry);
-
-  final Entry entry;
-
-  Widget _buildTiles(Entry root) {
-    if (root.children.isEmpty) {
-      return new Column(
-        children: <Widget>[
-          new ListTile(
-            title: new Text(root.title),
-          ),
-          new Divider(),
-        ],
-      );
-    }
-
-    return new Column(
-      children: <Widget>[
-        new ExpansionTile(
-          key: new PageStorageKey<Entry>(root),
-          title: new Text(root.title),
-          children: root.children.map(_buildTiles).toList(),
-        ),
-        new Divider(),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildTiles(entry);
-  }
+Future<Map> getQuakes(String apiType, String apiRange) async {
+  String apiURLquake =
+      "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${apiType}_${apiRange}.geojson";
+  http.Response response = await http.get(apiURLquake);
+  return json.decode(response.body);
 }
-
-// One entry in the multilevel list displayed by this app.
-class Entry {
-  Entry(this.title, [this.children = const <Entry>[]]);
-
-  final String title;
-  final List<Entry> children;
-}
-
-// The entire multilevel list displayed by this app.
-final List<Entry> data = <Entry>[
-  new Entry(
-    'Hour',
-    <Entry>[
-      new Entry(
-        'Section A0',
-        <Entry>[
-          new Entry('Item A0.1'),
-          new Entry('Item A0.2'),
-          new Entry('Item A0.3'),
-        ],
-      ),
-      new Entry('Section A1'),
-      new Entry('Section A2'),
-    ],
-  ),
-  new Entry(
-    'Day',
-    <Entry>[
-      new Entry('Section B0'),
-      new Entry('Section B1'),
-    ],
-  ),
-  new Entry(
-    'Week',
-    <Entry>[
-      new Entry('Section C0'),
-      new Entry('Section C1'),
-      new Entry(
-        'Section C2',
-        <Entry>[
-          new Entry('Item C2.0'),
-          new Entry('Item C2.1'),
-          new Entry('Item C2.2'),
-          new Entry('Item C2.3'),
-        ],
-      ),
-    ],
-  ),
-];

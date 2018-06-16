@@ -5,20 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'earthquake.dart';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
 class EarthquakeData {
+  EarthquakeData();
+
   var _mapView = new MapView();
 
   Map _data = new Map();
   List _features = new List();
 
-  void init(String apiType, String apiRange) {
-    getQuakes(apiType, apiRange).then((val) {
-      _data = val;
-      _features = _data['features'];
-    });
+  List init(val) {
+    List earthquakes = new List();
+    _data = val;
+    _features = _data['features'];
+    for (int i = 0; i < _features.length; i++) {
+      var e = _features[i]['properties'];
+      earthquakes.add(new Earthquake(
+          mag: e['mag'], place: e['place'], time: e['time'], url: e['url']));
+    }
+    return earthquakes;
   }
 
   void showMap() {
