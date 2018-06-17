@@ -18,7 +18,7 @@ class EarthquakeData {
   List _features = new List();
 
   List init(val) {
-    List earthquakes = new List();
+    List<Earthquake> earthquakes = new List();
     _data = val;
     _features = _data['features'];
     for (int i = 0; i < _features.length; i++) {

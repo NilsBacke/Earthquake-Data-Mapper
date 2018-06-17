@@ -5,6 +5,7 @@ import 'package:map_view/map_view.dart';
 import 'data.dart';
 import 'expansionTile.dart';
 import 'package:http/http.dart' as http;
+import 'earthquake.dart';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
@@ -20,12 +21,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   EarthquakeData earthquakeData = new EarthquakeData();
-  List allHourEarthquakes = new List();
-  List allDayEarthquakes = new List();
-  List allWeekEarthquakes = new List();
-  List sigHourEarthquakes = new List();
-  List sigDayEarthquakes = new List();
-  List sigWeekEarthquakes = new List();
+  List<Earthquake> allHourEarthquakes = new List();
+  List<Earthquake> allDayEarthquakes = new List();
+  List<Earthquake> allWeekEarthquakes = new List();
+  List<Earthquake> sigHourEarthquakes = new List();
+  List<Earthquake> sigDayEarthquakes = new List();
+  List<Earthquake> sigWeekEarthquakes = new List();
+  List<Entry> expansionData = new List();
 
   _HomeState() {
     getQuakes("all", "hour").then((val) {
@@ -56,6 +58,16 @@ class _HomeState extends State<Home> {
     getQuakes("significant", "week").then((val) {
       setState(() {
         sigWeekEarthquakes = earthquakeData.init(val);
+      });
+    });
+    getQuakes("all", "hour").then((val1) {
+      getQuakes("all", "day").then((val2) {
+        getQuakes("all", "week").then((val3) {
+          setState(() {
+            expansionData = getExpansionData(earthquakeData.init(val1),
+                earthquakeData.init(val2), earthquakeData.init(val3));
+          });
+        });
       });
     });
   }
@@ -140,14 +152,7 @@ class _HomeState extends State<Home> {
 
   Widget horizontalCardList() {
     if (sigWeekEarthquakes.length == 0) {
-      return new Container(
-        height: 220.0,
-        width: 400.0,
-        child: new Center(
-          child: new Text("No Significant Earthquakes"),
-        ),
-        color: Colors.green,
-      );
+      return noSigCard();
     }
     return new Container(
       height: 220.0,
@@ -255,6 +260,25 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget noSigCard() {
+    return new Container(
+      height: 220.0,
+      width: 400.0,
+      child: new Card(
+        child: new Center(
+          child: new Text(
+            "No Significant Earthquakes in the past week",
+            style: new TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w300,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget expansionList() {
     return new Expanded(
       // height: 300.0,
@@ -263,9 +287,9 @@ class _HomeState extends State<Home> {
         child: new ListView.builder(
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int i) {
-            return new EntryItem(data[i]);
+            return new EntryItem(expansionData[i]);
           },
-          itemCount: data.length,
+          itemCount: expansionData.length,
         ),
       ),
     );

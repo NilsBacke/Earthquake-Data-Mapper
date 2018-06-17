@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'earthquake.dart';
 
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry);
@@ -29,43 +30,40 @@ class Entry {
 }
 
 // The entire multilevel list displayed by this app.
-final List<Entry> data = <Entry>[
-  new Entry(
-    'Chapter A',
-    <Entry>[
-      new Entry(
-        'Section A0',
-        <Entry>[
-          new Entry('Item A0.1'),
-          new Entry('Item A0.2'),
-          new Entry('Item A0.3'),
-        ],
-      ),
-      new Entry('Section A1'),
-      new Entry('Section A2'),
-    ],
-  ),
-  new Entry(
-    'Chapter B',
-    <Entry>[
-      new Entry('Section B0'),
-      new Entry('Section B1'),
-    ],
-  ),
-  new Entry(
-    'Chapter C',
-    <Entry>[
-      new Entry('Section C0'),
-      new Entry('Section C1'),
-      new Entry(
-        'Section C2',
-        <Entry>[
-          new Entry('Item C2.0'),
-          new Entry('Item C2.1'),
-          new Entry('Item C2.2'),
-          new Entry('Item C2.3'),
-        ],
-      ),
-    ],
-  ),
-];
+List<Entry> getExpansionData(List<Earthquake> allHour, List<Earthquake> allDay,
+    List<Earthquake> allWeek) {
+  List<Entry> hour = new List();
+  List<Entry> day = new List();
+  List<Entry> week = new List();
+
+  int i;
+  for (i = 0; i < allHour.length; i++) {
+    if (i == 50) {
+      break;
+    }
+    hour.add(new Entry(allHour[i].place.toString()));
+  }
+  int afterHour = i;
+  for (; i < allDay.length; i++) {
+    if (i == 50 + afterHour) {
+      day.add(new Entry("Only showing the last 50 earthquakes"));
+      break;
+    }
+    day.add(new Entry(allDay[i].place.toString()));
+  }
+  int afterDay = i;
+  for (; i < allWeek.length; i++) {
+    if (i == 50 + afterDay + afterHour) {
+      week.add(new Entry("Only showing the last 50 earthquakes"));
+      debugPrint("Index: ${i.toString()}");
+      break;
+    }
+    week.add(new Entry(allWeek[i].place.toString()));
+  }
+
+  return <Entry>[
+    new Entry('Past Hour', hour),
+    new Entry('Past Day', day),
+    new Entry('Past Week', week),
+  ];
+}
