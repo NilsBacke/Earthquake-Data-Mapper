@@ -20,10 +20,10 @@ class _MostSigListState extends State<MostSigList> {
   @override
   void initState() {
     super.initState();
-    staticMapUri =
-        provider.getStaticUri(Locations.portland, 12, width: 400, height: 400);
     getQuakes("significant", "week").then((val) {
-      sigWeekEarthquakes = earthquakeData.init(val);
+      setState(() {
+        sigWeekEarthquakes = earthquakeData.init(val);
+      });
     });
   }
 
@@ -33,43 +33,60 @@ class _MostSigListState extends State<MostSigList> {
       return noSigCard();
     }
     return new Container(
-      height: 220.0,
-      width: 400.0,
-      child: new ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: sigWeekEarthquakes.length,
-        itemBuilder: (BuildContext context, int i) {
-          return mostSigCard(i);
-        },
+      child: new Card(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Container(
+              padding: const EdgeInsets.all(8.0),
+              child: new Text(
+                "Most Significant Earthquakes This Week",
+                style: new TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            new Divider(),
+            new Container(
+              height: 216.0,
+              child: new ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: sigWeekEarthquakes.length,
+                itemBuilder: (BuildContext context, int i) {
+                  return mostSigCard(i);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget mostSigCard(int i) {
+    Marker marker = new Marker(i.toString(), sigWeekEarthquakes[i].place,
+        sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long);
+
+    staticMapUri = provider.getStaticUriWithMarkers([marker],
+        center:
+            new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),
+        width: 400,
+        height: 400);
     return new Container(
-      width: 340.0,
-      height: 220.0,
-      child: new Card(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Column(
+      width: 336.0,
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          new Row(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              new Container(
+                width: 180.0,
+                child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: new Text(
-                        "Most Significant",
-                        style: new TextStyle(
-                          fontSize: 24.0,
-                        ),
-                      ),
-                    ),
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
@@ -99,38 +116,37 @@ class _MostSigListState extends State<MostSigList> {
                     ),
                   ],
                 ),
-                new Expanded(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Container(
-                      color: Colors.green,
-                      child: new Image.network(staticMapUri.toString()),
-                    ),
+              ),
+              new Expanded(
+                child: new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Container(
+                    child: new Image.network(staticMapUri.toString()),
                   ),
+                ),
+              ),
+            ],
+          ),
+          new ButtonTheme.bar(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.end,
+              children: <Widget>[
+                new FlatButton(
+                  child: new Text(
+                    "View on map",
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      earthquakeData.showMap();
+                    });
+                  },
                 ),
               ],
             ),
-            new ButtonTheme.bar(
-              child: ButtonBar(
-                alignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  new FlatButton(
-                    child: new Text(
-                      "View",
-                    ),
-                    onPressed: () {
-                      print("pressed");
-                      setState(() {
-                        earthquakeData.showMap();
-                      });
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
+      // ),
     );
   }
 

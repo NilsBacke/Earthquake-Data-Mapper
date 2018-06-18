@@ -26,19 +26,29 @@ class _HomeState extends State<Home> {
           title: new Text("Earthquake Data Mapper"),
           centerTitle: true,
         ),
-        body: new Container(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-              ),
-              new HeaderCard(),
-              new MostSigList(), // uncomment, save, then recomment
-              new ExpansionList(),
-            ],
-          ),
+        // body: new Container(
+        //   child: new Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: <Widget>[
+        //       new Padding(
+        //         padding: const EdgeInsets.only(top: 16.0),
+        //       ),
+        //       new HeaderCard(),
+        //       new MostSigList(), // uncomment, save, then recomment
+        //       new ExpansionList(),
+        //     ],
+        //   ),
+        // ),
+        body: new ListView(
+          children: <Widget>[
+            new Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+            ),
+            new HeaderCard(),
+            new MostSigList(), // uncomment, save, then recomment
+            new ExpansionList(),
+          ],
         ),
       ),
     );

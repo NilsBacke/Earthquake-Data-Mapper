@@ -20,8 +20,17 @@ class EarthquakeData {
     _features = _data['features'];
     for (int i = 0; i < _features.length; i++) {
       var e = _features[i]['properties'];
-      earthquakes.add(new Earthquake(
-          mag: e['mag'], place: e['place'], time: e['time'], url: e['url']));
+      var g = _features[i]['geometry']['coordinates'];
+      earthquakes.add(
+        new Earthquake(
+          mag: e['mag'],
+          place: e['place'],
+          time: e['time'],
+          url: e['url'],
+          lat: g[1],
+          long: g[0],
+        ),
+      );
     }
     return earthquakes;
   }

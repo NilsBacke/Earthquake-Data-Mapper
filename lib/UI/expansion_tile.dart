@@ -26,16 +26,31 @@ class _ExpansionListState extends State<ExpansionList> {
 
   @override
   Widget build(BuildContext context) {
-    return new Expanded(
+    return new Container(
       // height: 300.0,
       // margin: new EdgeInsets.all(20.0),
       child: new Card(
-        child: new ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int i) {
-            return new EntryItem(expansionData[i]);
-          },
-          itemCount: expansionData.length,
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Container(
+              padding: const EdgeInsets.all(8.0),
+              child: new Text(
+                "All Earthquakes",
+                style: new TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            new Divider(),
+            new ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int i) {
+                return new EntryItem(expansionData[i]);
+              },
+              itemCount: expansionData.length,
+              physics: ClampingScrollPhysics(),
+            ),
+          ],
         ),
       ),
     );

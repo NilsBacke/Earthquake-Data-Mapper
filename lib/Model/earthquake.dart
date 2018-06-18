@@ -5,8 +5,10 @@ class Earthquake {
   final place;
   var time;
   final url;
+  final lat;
+  final long;
 
-  Earthquake({this.mag, this.place, this.time, this.url}) {
+  Earthquake({this.mag, this.place, this.time, this.url, this.lat, this.long}) {
     time = _getTime(this.time);
   }
 
