@@ -68,16 +68,8 @@ class EarthquakeData {
     }
   }
 
-  String _getTime(int index) {
-    int milliseconds =
-        int.parse(_features[index]['properties']['time'].toString());
-    DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
-    var format = new DateFormat.yMd().add_jm();
-    return format.format(date);
-  }
-
-  double getOpacityFromMag(mag) {
-    return sqrt(10 * mag);
+  getMapView() {
+    return _mapView;
   }
 
   Future<Map> getQuakes(String apiType, String apiRange) async {

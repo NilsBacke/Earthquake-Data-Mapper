@@ -7,7 +7,7 @@ import 'expansionTile.dart';
 import 'package:http/http.dart' as http;
 import 'earthquake.dart';
 
-const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
+const static_maps_api_key = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
 void main() {
   MapView.setApiKey(apiKey);
@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   List<Earthquake> sigDayEarthquakes = new List();
   List<Earthquake> sigWeekEarthquakes = new List();
   List<Entry> expansionData = new List();
+  var provider = new StaticMapProvider(static_maps_api_key);
 
   _HomeState() {
     getQuakes("all", "hour").then((val) {
@@ -168,6 +169,14 @@ class _HomeState extends State<Home> {
   }
 
   Widget mostSigCard(int i) {
+    Uri uri;
+
+    getStaticMapImageUri(i).then((val) {
+      setState(() {
+        uri = val;
+      });
+    });
+
     return new Container(
       width: 340.0,
       height: 220.0,
@@ -204,7 +213,7 @@ class _HomeState extends State<Home> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        "6/13/2018 9:25 PM",
+                        sigWeekEarthquakes[i].time.toString(),
                         style: new TextStyle(
                           fontSize: 14.0,
                         ),
@@ -213,7 +222,7 @@ class _HomeState extends State<Home> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        "4km SW of Volcano, Hawaii",
+                        sigWeekEarthquakes[i].place,
                         style: new TextStyle(
                           fontSize: 14.0,
                         ),
@@ -230,7 +239,8 @@ class _HomeState extends State<Home> {
                       //   fit: BoxFit.contain,
                       //   child: new Image.asset("images/cracks.jpg"),
                       // ),
-                      child: new Image.asset("images/lava.jpg"),
+                      // child: new Image.asset("images/lava.jpg"),
+                      child: new Image.network(uri.toString()),
                     ),
                   ),
                 ),
@@ -294,11 +304,16 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-Future<Map> getQuakes(String apiType, String apiRange) async {
-  String apiURLquake =
-      "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${apiType}_${apiRange}.geojson";
-  http.Response response = await http.get(apiURLquake);
-  return json.decode(response.body);
+  Future<Uri> getStaticMapImageUri(int i) {
+    return provider.getImageUriFromMap(earthquakeData.getMapView(),
+        width: 400, height: 400);
+  }
+
+  Future<Map> getQuakes(String apiType, String apiRange) async {
+    String apiURLquake =
+        "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${apiType}_${apiRange}.geojson";
+    http.Response response = await http.get(apiURLquake);
+    return json.decode(response.body);
+  }
 }
