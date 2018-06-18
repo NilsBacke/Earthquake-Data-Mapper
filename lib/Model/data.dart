@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'earthquake.dart';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
@@ -71,11 +68,11 @@ class EarthquakeData {
   getMapView() {
     return _mapView;
   }
+}
 
-  Future<Map> getQuakes(String apiType, String apiRange) async {
-    String apiURLquake =
-        "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${apiType}_${apiRange}.geojson";
-    http.Response response = await http.get(apiURLquake);
-    return json.decode(response.body);
-  }
+Future<Map> getQuakes(String apiType, String apiRange) async {
+  String apiURLquake =
+      "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/${apiType}_${apiRange}.geojson";
+  http.Response response = await http.get(apiURLquake);
+  return json.decode(response.body);
 }

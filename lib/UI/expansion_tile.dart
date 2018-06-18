@@ -1,5 +1,46 @@
+import 'package:earthquake_data_mapper/Model/data.dart';
+import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
-import 'earthquake.dart';
+
+class ExpansionList extends StatefulWidget {
+  @override
+  _ExpansionListState createState() => _ExpansionListState();
+}
+
+class _ExpansionListState extends State<ExpansionList> {
+  EarthquakeData earthquakeData = new EarthquakeData();
+  List<Entry> expansionData = new List();
+
+  _ExpansionListState() {
+    getQuakes("all", "hour").then((val1) {
+      getQuakes("all", "day").then((val2) {
+        getQuakes("all", "week").then((val3) {
+          setState(() {
+            expansionData = getExpansionData(earthquakeData.init(val1),
+                earthquakeData.init(val2), earthquakeData.init(val3));
+          });
+        });
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Expanded(
+      // height: 300.0,
+      // margin: new EdgeInsets.all(20.0),
+      child: new Card(
+        child: new ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int i) {
+            return new EntryItem(expansionData[i]);
+          },
+          itemCount: expansionData.length,
+        ),
+      ),
+    );
+  }
+}
 
 class EntryItem extends StatelessWidget {
   const EntryItem(this.entry);
