@@ -4,7 +4,7 @@ import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 import 'package:map_view/marker.dart';
 
 int range = 3500;
@@ -85,25 +85,25 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
   Future<List<Widget>> _getEarthquakesNearMe(List<Earthquake> allDay) async {
     List<Widget> widgets = new List();
     var currentLocation = <String, double>{};
-    var location = new Location();
+    // var location = new Location();
 
-    try {
-      currentLocation = await location.getLocation;
-      debugPrint("Location: ${currentLocation['latitude']}");
-    } catch (e) {
-      currentLocation = null;
-      debugPrint("error");
-    }
-    debugPrint('length: ${allDay.length}');
-    for (int i = 0; i < allDay.length; i++) {
-      double d = _getDistance(currentLocation['latitude'],
-          currentLocation['longitude'], allDay[i].lat, allDay[i].long);
-      debugPrint('dist: $d');
-      if (d <= range) {
-        debugPrint("add widget");
-        widgets.add(_getEarthquakeWidget(allDay[i]));
-      }
-    }
+    // try {
+    //   currentLocation = await location.getLocation;
+    //   debugPrint("Location: ${currentLocation['latitude']}");
+    // } catch (e) {
+    //   currentLocation = null;
+    //   debugPrint("error");
+    // }
+    // debugPrint('length: ${allDay.length}');
+    // for (int i = 0; i < allDay.length; i++) {
+    //   double d = _getDistance(currentLocation['latitude'],
+    //       currentLocation['longitude'], allDay[i].lat, allDay[i].long);
+    //   debugPrint('dist: $d');
+    //   if (d <= range) {
+    //     debugPrint("add widget");
+    //     widgets.add(_getEarthquakeWidget(allDay[i]));
+    //   }
+    // }
 
     return widgets;
   }
