@@ -1,6 +1,7 @@
 import 'package:earthquake_data_mapper/UI/expansion_tile.dart';
 import 'package:earthquake_data_mapper/UI/header_card.dart';
 import 'package:earthquake_data_mapper/UI/most_sig_list.dart';
+import 'package:earthquake_data_mapper/UI/near_me.dart';
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'dart:async';
@@ -26,6 +27,16 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     refreshHomePage();
+    setState(() {
+      homePageWidgets = new List();
+      homePageWidgets.add(new Padding(
+        padding: const EdgeInsets.only(top: 16.0),
+      ));
+      homePageWidgets.add(new HeaderCard());
+      homePageWidgets.add(new MostSigList());
+      homePageWidgets.add(new NearMe());
+      homePageWidgets.add(new ExpansionList());
+    });
   }
 
   Future<Null> refreshHomePage() async {
@@ -41,6 +52,7 @@ class _HomeState extends State<Home> {
         ));
         homePageWidgets.add(new HeaderCard());
         homePageWidgets.add(new MostSigList());
+        homePageWidgets.add(new NearMe());
         homePageWidgets.add(new ExpansionList());
       });
       scaffoldKey.currentState?.showSnackBar(

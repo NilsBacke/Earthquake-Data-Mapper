@@ -96,9 +96,10 @@ class _MostSigListState extends State<MostSigList> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        "Magnitude ${sigWeekEarthquakes[i].mag}",
+                        "Magnitude: ${sigWeekEarthquakes[i].mag}",
                         style: new TextStyle(
                           fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
