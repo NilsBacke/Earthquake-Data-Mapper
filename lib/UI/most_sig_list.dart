@@ -22,7 +22,7 @@ class _MostSigListState extends State<MostSigList> {
     super.initState();
     getQuakes("significant", "week").then((val) {
       setState(() {
-        sigWeekEarthquakes = earthquakeData.init(val);
+        sigWeekEarthquakes = earthquakeData.initEarthquakeData(val);
       });
     });
   }
@@ -64,8 +64,14 @@ class _MostSigListState extends State<MostSigList> {
   }
 
   Widget mostSigCard(int i) {
-    Marker marker = new Marker(i.toString(), sigWeekEarthquakes[i].place,
-        sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long);
+    // for significant earthquakes
+    // id = 1000 + i
+    // 1000, 1001
+    Marker marker = new Marker(
+        (1000 + i).toString(),
+        sigWeekEarthquakes[i].place,
+        sigWeekEarthquakes[i].lat,
+        sigWeekEarthquakes[i].long);
 
     staticMapUri = provider.getStaticUriWithMarkers([marker],
         center:
@@ -137,7 +143,7 @@ class _MostSigListState extends State<MostSigList> {
                   ),
                   onPressed: () {
                     setState(() {
-                      earthquakeData.showMap();
+                      earthquakeData.showMapAtMarker(marker);
                     });
                   },
                 ),

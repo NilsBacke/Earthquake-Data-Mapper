@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
 import 'earthquake.dart';
+import 'package:flutter/material.dart';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
@@ -14,7 +15,8 @@ class EarthquakeData {
   Map _data = new Map();
   List _features = new List();
 
-  List init(val) {
+  List initEarthquakeData(val) {
+    MapView.setApiKey(apiKey);
     List<Earthquake> earthquakes = new List();
     _data = val;
     _features = _data['features'];
@@ -35,31 +37,38 @@ class EarthquakeData {
     return earthquakes;
   }
 
-  void showMap() {
+  void showMap(List<Earthquake> earthquakes) {
     _mapView.show(_getMapOptions(),
         toolbarActions: [new ToolbarAction("Refresh", 1)]);
     _mapView.onMapReady.listen((_) {
+      // _mapView.setMarkers(_getMarkers(earthquakes));
       _setMarkers(_features);
-      _mapView.zoomToFit(padding: 1000);
+      _mapView.zoomToFit(padding: 100);
+      debugPrint(
+          "****************************************************************ready2");
     });
   }
 
-  void showMapAtMarker(String id) {
-    _mapView.show(_getMapOptions());
+  void showMapAtMarker(Marker marker) {
+    _mapView.show(_getMapOptions(),
+        toolbarActions: [new ToolbarAction("Refresh", 1)]);
+    List<Marker> markers = new List();
+    markers.add(marker);
     _mapView.onMapReady.listen((_) {
+      // _mapView.setMarkers([marker]);
       _setMarkers(_features);
-      _mapView.zoomTo([id]);
+      _mapView.zoomToFit(padding: 50);
+      debugPrint("ready");
     });
   }
 
-  MapOptions _getMapOptions() {
-    return new MapOptions(
-      mapViewType: MapViewType.normal,
-      showUserLocation: true,
-      initialCameraPosition:
-          new CameraPosition(new Location(45.5235258, -122.6732493), 1.0),
-      title: "Earthquake Data Mapper",
-    );
+  List<Marker> _getMarkers(List<Earthquake> list) {
+    List<Marker> markers = new List();
+    for (int i = 0; i < list.length; i++) {
+      markers.add(new Marker(
+          i.toString(), '${list[i].place}', list[i].lat, list[i].long));
+    }
+    return markers;
   }
 
   void _setMarkers(List list) {
@@ -72,6 +81,16 @@ class EarthquakeData {
           list[i]['geometry']['coordinates'][0]));
       // });
     }
+  }
+
+  MapOptions _getMapOptions() {
+    return new MapOptions(
+      mapViewType: MapViewType.normal,
+      showUserLocation: true,
+      initialCameraPosition:
+          new CameraPosition(new Location(45.5235258, -122.6732493), 1.0),
+      title: "Earthquake Data Mapper",
+    );
   }
 
   getMapView() {

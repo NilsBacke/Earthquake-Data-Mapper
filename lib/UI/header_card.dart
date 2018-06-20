@@ -14,7 +14,7 @@ class _HeaderCardState extends State<HeaderCard> {
   _HeaderCardState() {
     getQuakes("all", "day").then((val) {
       setState(() {
-        allDayEarthquakes = earthquakeData.init(val);
+        allDayEarthquakes = earthquakeData.initEarthquakeData(val);
       });
     });
   }
@@ -56,7 +56,7 @@ class _HeaderCardState extends State<HeaderCard> {
                         onPressed: () {
                           print("pressed");
                           setState(() {
-                            earthquakeData.showMap();
+                            earthquakeData.showMap(allDayEarthquakes);
                           });
                         },
                       ),

@@ -16,8 +16,10 @@ class _ExpansionListState extends State<ExpansionList> {
       getQuakes("all", "day").then((val2) {
         getQuakes("all", "week").then((val3) {
           setState(() {
-            expansionData = getExpansionData(earthquakeData.init(val1),
-                earthquakeData.init(val2), earthquakeData.init(val3));
+            expansionData = getExpansionData(
+                earthquakeData.initEarthquakeData(val1),
+                earthquakeData.initEarthquakeData(val2),
+                earthquakeData.initEarthquakeData(val3));
           });
         });
       });
