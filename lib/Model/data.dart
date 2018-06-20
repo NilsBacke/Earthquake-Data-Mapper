@@ -8,15 +8,12 @@ import 'package:flutter/material.dart';
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
 class EarthquakeData {
-  EarthquakeData();
-
   var _mapView = new MapView();
 
   Map _data = new Map();
   List _features = new List();
 
   List initEarthquakeData(val) {
-    MapView.setApiKey(apiKey);
     List<Earthquake> earthquakes = new List();
     _data = val;
     _features = _data['features'];
@@ -37,50 +34,27 @@ class EarthquakeData {
     return earthquakes;
   }
 
-  void showMap(List<Earthquake> earthquakes) {
-    _mapView.show(_getMapOptions(),
-        toolbarActions: [new ToolbarAction("Refresh", 1)]);
+  showMap(List<Earthquake> list) {
+    _mapView = new MapView();
+    _mapView.show(new MapOptions(
+      mapViewType: MapViewType.normal,
+      showUserLocation: true,
+      title: "Testing",
+    ));
+    List<Marker> markers = getMarkers(list);
     _mapView.onMapReady.listen((_) {
-      // _mapView.setMarkers(_getMarkers(earthquakes));
-      _setMarkers(_features);
-      _mapView.zoomToFit(padding: 100);
-      debugPrint(
-          "****************************************************************ready2");
+      _mapView.setMarkers(markers);
     });
   }
 
-  void showMapAtMarker(Marker marker) {
-    _mapView.show(_getMapOptions(),
-        toolbarActions: [new ToolbarAction("Refresh", 1)]);
+  List<Marker> getMarkers(List<Earthquake> list) {
     List<Marker> markers = new List();
-    markers.add(marker);
-    _mapView.onMapReady.listen((_) {
-      // _mapView.setMarkers([marker]);
-      _setMarkers(_features);
-      _mapView.zoomToFit(padding: 50);
-      debugPrint("ready");
-    });
-  }
-
-  List<Marker> _getMarkers(List<Earthquake> list) {
-    List<Marker> markers = new List();
+    print("List length: ${list.length}");
     for (int i = 0; i < list.length; i++) {
-      markers.add(new Marker(
-          i.toString(), '${list[i].place}', list[i].lat, list[i].long));
+      markers.add(new Marker(i.toString(),
+          'Mag: ${list[i].mag} | ${list[i].place}', list[i].lat, list[i].long));
     }
     return markers;
-  }
-
-  void _setMarkers(List list) {
-    for (int i = 0; i < list.length; i++) {
-      // setState(() {
-      _mapView.addMarker(new Marker(
-          i.toString(),
-          "Mag: ${list[i]['properties']['mag']} | ${list[i]['properties']['place']}",
-          list[i]['geometry']['coordinates'][1],
-          list[i]['geometry']['coordinates'][0]));
-      // });
-    }
   }
 
   MapOptions _getMapOptions() {
@@ -95,6 +69,19 @@ class EarthquakeData {
 
   getMapView() {
     return _mapView;
+  }
+
+  void showMapAtMarker(Marker marker) {
+    _mapView = new MapView();
+    _mapView.show(_getMapOptions(),
+        toolbarActions: [new ToolbarAction("Refresh", 1)]);
+    List<Marker> markers = new List();
+    // markers.add(marker);
+    _mapView.onMapReady.listen((_) {
+      // _mapView.setMarkers([marker]);
+      _mapView.addMarker(new Marker("0", "Test", 45.525, -122.687));
+      debugPrint("ready");
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
 import 'package:earthquake_data_mapper/Model/data.dart';
+import 'package:map_view/map_view.dart';
 
 class HeaderCard extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class _HeaderCardState extends State<HeaderCard> {
   EarthquakeData earthquakeData = new EarthquakeData();
   List<Earthquake> allDayEarthquakes = new List();
 
+  MapView mapView = new MapView();
+
   _HeaderCardState() {
     getQuakes("all", "day").then((val) {
       setState(() {
@@ -18,6 +21,21 @@ class _HeaderCardState extends State<HeaderCard> {
       });
     });
   }
+
+  // showMap() {
+  //   mapView.show(new MapOptions(
+  //     mapViewType: MapViewType.normal,
+  //     showUserLocation: true,
+  //     title: "Testing",
+  //   ));
+  //   mapView.onMapReady.listen((_) {
+  //     print("ready");
+  //     mapView.setMarkers([
+  //       new Marker("0", "Test", 45.525, -122.687),
+  //       new Marker("1", "Test", 45.565, -122.687)
+  //     ]);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
