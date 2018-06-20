@@ -72,7 +72,6 @@ class _MostSigListState extends State<MostSigList> {
         'Mag: ${sigWeekEarthquakes[i].mag} | ${sigWeekEarthquakes[i].place}',
         sigWeekEarthquakes[i].lat,
         sigWeekEarthquakes[i].long);
-
     staticMapUri = provider.getStaticUriWithMarkers([marker],
         center:
             new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),

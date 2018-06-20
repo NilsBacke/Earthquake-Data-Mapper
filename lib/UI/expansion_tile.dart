@@ -1,6 +1,7 @@
 import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
+import 'package:map_view/map_view.dart';
 
 class ExpansionList extends StatefulWidget {
   @override
@@ -10,16 +11,20 @@ class ExpansionList extends StatefulWidget {
 class _ExpansionListState extends State<ExpansionList> {
   EarthquakeData earthquakeData = new EarthquakeData();
   List<Entry> expansionData = new List();
+  List<Earthquake> allHourEarthquakes = new List();
+  List<Earthquake> allDayEarthquakes = new List();
+  List<Earthquake> allWeekEarthquakes = new List();
 
   _ExpansionListState() {
     getQuakes("all", "hour").then((val1) {
       getQuakes("all", "day").then((val2) {
         getQuakes("all", "week").then((val3) {
           setState(() {
+            allHourEarthquakes = earthquakeData.initEarthquakeData(val1);
+            allDayEarthquakes = earthquakeData.initEarthquakeData(val2);
+            allWeekEarthquakes = earthquakeData.initEarthquakeData(val3);
             expansionData = getExpansionData(
-                earthquakeData.initEarthquakeData(val1),
-                earthquakeData.initEarthquakeData(val2),
-                earthquakeData.initEarthquakeData(val3));
+                allHourEarthquakes, allDayEarthquakes, allWeekEarthquakes);
           });
         });
       });
@@ -47,7 +52,12 @@ class _ExpansionListState extends State<ExpansionList> {
             new ListView.builder(
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int i) {
-                return new EntryItem(expansionData[i]);
+                return new EntryItem(
+                    expansionData[i],
+                    allHourEarthquakes,
+                    allDayEarthquakes,
+                    allWeekEarthquakes,
+                    new EarthquakeData());
               },
               itemCount: expansionData.length,
               physics: ClampingScrollPhysics(),
@@ -60,12 +70,46 @@ class _ExpansionListState extends State<ExpansionList> {
 }
 
 class EntryItem extends StatelessWidget {
-  const EntryItem(this.entry);
+  EntryItem(
+      this.entry, this.allHour, this.allDay, this.allWeek, this.earthquakeData);
 
   final Entry entry;
+  final List<Earthquake> allHour;
+  final List<Earthquake> allDay;
+  final List<Earthquake> allWeek;
+  final EarthquakeData earthquakeData;
 
   Widget _buildTiles(Entry root) {
-    if (root.children.isEmpty) return new ListTile(title: new Text(root.title));
+    if (root.children.isEmpty) {
+      if (root.index != null) {
+        var e;
+        if (root.category == "hour") {
+          e = allHour[root.index];
+        } else if (root.category == "day") {
+          e = allDay[root.index];
+        } else {
+          e = allWeek[root.index];
+        }
+        return new ListTile(
+          title: new Text(root.title),
+          subtitle: new Text(e.time),
+          leading: new CircleAvatar(
+            child: new Text('${e.mag}'),
+          ),
+          onTap: () {
+            print("tap");
+            Marker marker;
+            marker =
+                new Marker("0", 'Mag: ${e.mag} | ${e.place}', e.lat, e.long);
+            earthquakeData.showMapAtMarker(marker);
+          },
+        );
+      } else {
+        return new ListTile(
+          title: new Text(root.title),
+        );
+      }
+    }
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
       title: new Text(root.title),
@@ -79,12 +123,14 @@ class EntryItem extends StatelessWidget {
   }
 }
 
-// One entry in the multilevel list displayed by this app.
 class Entry {
-  Entry(this.title, [this.children = const <Entry>[]]);
+  Entry(this.title,
+      {this.index, this.category, this.children = const <Entry>[]});
 
   final String title;
   final List<Entry> children;
+  final int index;
+  final String category;
 }
 
 // The entire multilevel list displayed by this app.
@@ -99,7 +145,7 @@ List<Entry> getExpansionData(List<Earthquake> allHour, List<Earthquake> allDay,
     if (i == 50) {
       break;
     }
-    hour.add(new Entry(allHour[i].place.toString()));
+    hour.add(new Entry('${allHour[i].place}', index: i, category: "hour"));
   }
   int afterHour = i;
   for (; i < allDay.length; i++) {
@@ -107,7 +153,7 @@ List<Entry> getExpansionData(List<Earthquake> allHour, List<Earthquake> allDay,
       day.add(new Entry("Only showing the last 50 earthquakes"));
       break;
     }
-    day.add(new Entry(allDay[i].place.toString()));
+    day.add(new Entry('${allDay[i].place}', index: i, category: "day"));
   }
   int afterDay = i;
   for (; i < allWeek.length; i++) {
@@ -116,12 +162,12 @@ List<Entry> getExpansionData(List<Earthquake> allHour, List<Earthquake> allDay,
       debugPrint("Index: ${i.toString()}");
       break;
     }
-    week.add(new Entry(allWeek[i].place.toString()));
+    week.add(new Entry('${allWeek[i].place}', index: i, category: "week"));
   }
 
   return <Entry>[
-    new Entry('Past Hour', hour),
-    new Entry('Past Day', day),
-    new Entry('Past Week', week),
+    new Entry('Past Hour', children: hour),
+    new Entry('Past Day', children: day),
+    new Entry('Past Week', children: week),
   ];
 }
