@@ -36,15 +36,25 @@ class EarthquakeData {
 
   showMap(List<Earthquake> list) {
     _mapView = new MapView();
-    _mapView.show(new MapOptions(
-      mapViewType: MapViewType.normal,
-      showUserLocation: true,
-      title: "Testing",
-    ));
+    _mapView
+        .show(_getMapOptions(), toolbarActions: [new ToolbarAction("Back", 0)]);
     List<Marker> markers = getMarkers(list);
     _mapView.onMapReady.listen((_) {
       _mapView.setMarkers(markers);
+      _mapView.zoomToFit(padding: 100);
     });
+    _setToolbarAction();
+  }
+
+  showMapAtMarker(Marker marker) {
+    _mapView = new MapView();
+    _mapView.show(_getMapOptionsFromMarker(marker),
+        toolbarActions: [new ToolbarAction("Back", 0)]);
+    _mapView.onMapReady.listen((_) {
+      _mapView.setMarkers([marker]);
+      // _mapView.zoomTo([marker.id]);
+    });
+    _setToolbarAction();
   }
 
   List<Marker> getMarkers(List<Earthquake> list) {
@@ -57,31 +67,34 @@ class EarthquakeData {
     return markers;
   }
 
-  MapOptions _getMapOptions() {
+  MapOptions _getMapOptionsFromMarker(Marker marker) {
     return new MapOptions(
       mapViewType: MapViewType.normal,
+      initialCameraPosition: new CameraPosition(
+          new Location(marker.latitude, marker.longitude), 6.0),
       showUserLocation: true,
-      initialCameraPosition:
-          new CameraPosition(new Location(45.5235258, -122.6732493), 1.0),
       title: "Earthquake Data Mapper",
     );
   }
 
-  getMapView() {
-    return _mapView;
+  MapOptions _getMapOptions() {
+    return new MapOptions(
+      mapViewType: MapViewType.normal,
+      showUserLocation: true,
+      title: "Earthquake Data Mapper",
+    );
   }
 
-  void showMapAtMarker(Marker marker) {
-    _mapView = new MapView();
-    _mapView.show(_getMapOptions(),
-        toolbarActions: [new ToolbarAction("Refresh", 1)]);
-    List<Marker> markers = new List();
-    // markers.add(marker);
-    _mapView.onMapReady.listen((_) {
-      // _mapView.setMarkers([marker]);
-      _mapView.addMarker(new Marker("0", "Test", 45.525, -122.687));
-      debugPrint("ready");
+  _setToolbarAction() {
+    _mapView.onToolbarAction.listen((id) {
+      if (id == 0) {
+        _mapView.dismiss();
+      }
     });
+  }
+
+  getMapView() {
+    return _mapView;
   }
 }
 

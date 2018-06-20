@@ -69,7 +69,7 @@ class _MostSigListState extends State<MostSigList> {
     // 1000, 1001
     Marker marker = new Marker(
         (1000 + i).toString(),
-        sigWeekEarthquakes[i].place,
+        'Mag: ${sigWeekEarthquakes[i].mag} | ${sigWeekEarthquakes[i].place}',
         sigWeekEarthquakes[i].lat,
         sigWeekEarthquakes[i].long);
 
@@ -78,6 +78,7 @@ class _MostSigListState extends State<MostSigList> {
             new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),
         width: 400,
         height: 400);
+
     return new Container(
       width: 336.0,
       child: new Column(
