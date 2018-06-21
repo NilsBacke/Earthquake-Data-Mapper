@@ -79,15 +79,33 @@ class _HomeState extends State<Home> {
         appBar: new AppBar(
           title: new Text("Earthquake Data Mapper"),
           centerTitle: true,
+          backgroundColor: Colors.blue,
         ),
-        body: new RefreshIndicator(
-          key: refreshKey,
-          child: new ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            children: homePageWidgets,
+        body: new Container(
+          decoration: _gradient(),
+          child: new RefreshIndicator(
+            key: refreshKey,
+            child: new ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: homePageWidgets,
+            ),
+            onRefresh: refreshHomePage,
           ),
-          onRefresh: refreshHomePage,
         ),
+      ),
+    );
+  }
+
+  BoxDecoration _gradient() {
+    return new BoxDecoration(
+      gradient: new LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        // stops: [0.1, 0.3, 0.5, 0.7, 0.9],
+        colors: [
+          Colors.blue[100],
+          Colors.blue[100],
+        ],
       ),
     );
   }

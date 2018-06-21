@@ -19,7 +19,7 @@ class _NearMeState extends State<NearMe> {
   EarthquakeData earthquakeData = new EarthquakeData();
   final _controller = TextEditingController();
 
-  int range = 2500; // miles
+  int range = 2000; // miles
 
   @override
   void initState() {
@@ -43,6 +43,7 @@ class _NearMeState extends State<NearMe> {
   @override
   Widget build(BuildContext context) {
     return new Card(
+      color: Colors.lightBlue[200],
       child: new ExpansionTile(
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,7 +94,7 @@ class _NearMeState extends State<NearMe> {
           ],
         ),
         leading: new CircleAvatar(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.blue,
           child: new Text('${earthquakeWidgets.length}'),
         ),
         children: earthquakeWidgets,
@@ -144,14 +145,16 @@ class _NearMeState extends State<NearMe> {
     // force a single location update
     LocationResult currentLocation = await Geolocation.lastKnownLocation();
 
-    debugPrint('length: ${allDay.length}');
-    for (int i = 0; i < allDay.length; i++) {
-      double d = _getDistance(currentLocation.location.latitude,
-          currentLocation.location.longitude, allDay[i].lat, allDay[i].long);
-      debugPrint('dist: $d');
-      if (d <= range) {
-        debugPrint("add widget");
-        widgets.add(_getEarthquakeWidget(allDay[i]));
+    if (currentLocation.isSuccessful) {
+      debugPrint('length: ${allDay.length}');
+      for (int i = 0; i < allDay.length; i++) {
+        double d = _getDistance(currentLocation.location.latitude,
+            currentLocation.location.longitude, allDay[i].lat, allDay[i].long);
+        debugPrint('dist: $d');
+        if (d <= range) {
+          debugPrint("add widget");
+          widgets.add(_getEarthquakeWidget(allDay[i]));
+        }
       }
     }
 

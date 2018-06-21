@@ -25,6 +25,7 @@ class _HeaderCardState extends State<HeaderCard> {
   @override
   Widget build(BuildContext context) {
     return new Card(
+      color: Colors.lightBlue[200],
       child: new Row(
         // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -35,7 +36,7 @@ class _HeaderCardState extends State<HeaderCard> {
             style: new TextStyle(
               fontSize: 75.0,
               fontWeight: FontWeight.w100,
-              color: const Color(0xFF707070),
+              color: Colors.black,
             ),
           ),
           new Container(
@@ -43,10 +44,13 @@ class _HeaderCardState extends State<HeaderCard> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Text(
-                  "Earthquakes today",
-                  style: new TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.w300),
+                new Container(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: new Text(
+                    "Earthquakes today",
+                    style: new TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.w400),
+                  ),
                 ),
                 new ButtonTheme.bar(
                   child: ButtonBar(

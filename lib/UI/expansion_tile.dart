@@ -42,6 +42,7 @@ class _ExpansionListState extends State<ExpansionList> {
       // height: 300.0,
       // margin: new EdgeInsets.all(20.0),
       child: new Card(
+        color: Colors.lightBlue[200],
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
