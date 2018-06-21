@@ -16,19 +16,24 @@ class _ExpansionListState extends State<ExpansionList> {
   List<Earthquake> allWeekEarthquakes = new List();
 
   _ExpansionListState() {
-    getQuakes("all", "hour").then((val1) {
-      getQuakes("all", "day").then((val2) {
-        getQuakes("all", "week").then((val3) {
-          setState(() {
-            allHourEarthquakes = earthquakeData.initEarthquakeData(val1);
-            allDayEarthquakes = earthquakeData.initEarthquakeData(val2);
-            allWeekEarthquakes = earthquakeData.initEarthquakeData(val3);
-            expansionData = getExpansionData(
-                allHourEarthquakes, allDayEarthquakes, allWeekEarthquakes);
+    if (expansionData.isEmpty &&
+        allHourEarthquakes.isEmpty &&
+        allDayEarthquakes.isEmpty &&
+        allWeekEarthquakes.isEmpty) {
+      getQuakes("all", "hour").then((val1) {
+        getQuakes("all", "day").then((val2) {
+          getQuakes("all", "week").then((val3) {
+            setState(() {
+              allHourEarthquakes = earthquakeData.initEarthquakeData(val1);
+              allDayEarthquakes = earthquakeData.initEarthquakeData(val2);
+              allWeekEarthquakes = earthquakeData.initEarthquakeData(val3);
+              expansionData = getExpansionData(
+                  allHourEarthquakes, allDayEarthquakes, allWeekEarthquakes);
+            });
           });
         });
       });
-    });
+    }
   }
 
   @override

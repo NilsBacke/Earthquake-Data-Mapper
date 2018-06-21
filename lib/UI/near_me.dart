@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 // import 'package:location/location.dart';
 import 'package:map_view/marker.dart';
+import 'package:geolocation/geolocation.dart';
 
-int range = 3500;
+int range = 1000; // miles
 
 enum ChangeRange { changeRange }
 
@@ -37,23 +38,6 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Card(
-      // child: new ListView.builder(
-      //   shrinkWrap: true,
-      //   physics: ClampingScrollPhysics(),
-      //   itemCount: earthquakeWidgets.length,
-      //   itemBuilder: (_, index) {
-      //     return new ExpansionTile(
-      //       title: new Text("Earthquakes Near Me"),
-      //       leading: new CircleAvatar(
-      //         child: new GestureDetector(
-      //           onTap: () => debugPrint("pressed"),
-      //           child: new Text("$range mi."),
-      //         ),
-      //       ),
-      //       children: earthquakeWidgets,
-      //     );
-      //   },
-      // ),
       child: new ExpansionTile(
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,26 +68,20 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
 
   Future<List<Widget>> _getEarthquakesNearMe(List<Earthquake> allDay) async {
     List<Widget> widgets = new List();
-    var currentLocation = <String, double>{};
-    // var location = new Location();
 
-    // try {
-    //   currentLocation = await location.getLocation;
-    //   debugPrint("Location: ${currentLocation['latitude']}");
-    // } catch (e) {
-    //   currentLocation = null;
-    //   debugPrint("error");
-    // }
-    // debugPrint('length: ${allDay.length}');
-    // for (int i = 0; i < allDay.length; i++) {
-    //   double d = _getDistance(currentLocation['latitude'],
-    //       currentLocation['longitude'], allDay[i].lat, allDay[i].long);
-    //   debugPrint('dist: $d');
-    //   if (d <= range) {
-    //     debugPrint("add widget");
-    //     widgets.add(_getEarthquakeWidget(allDay[i]));
-    //   }
-    // }
+    // force a single location update
+    LocationResult currentLocation = await Geolocation.lastKnownLocation();
+
+    debugPrint('length: ${allDay.length}');
+    for (int i = 0; i < allDay.length; i++) {
+      double d = _getDistance(currentLocation.location.latitude,
+          currentLocation.location.longitude, allDay[i].lat, allDay[i].long);
+      debugPrint('dist: $d');
+      if (d <= range) {
+        debugPrint("add widget");
+        widgets.add(_getEarthquakeWidget(allDay[i]));
+      }
+    }
 
     return widgets;
   }
@@ -138,6 +116,7 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
             sin(dLon / 2);
     var c = 2 * atan2(sqrt(a), sqrt(1 - a));
     var d = r * c;
+    d = d * 0.621371; // for miles
     return d;
   }
 
