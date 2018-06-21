@@ -25,6 +25,10 @@ class _NearMeState extends State<NearMe> {
   void initState() {
     super.initState();
     print("init");
+    _getData();
+  }
+
+  _getData() async {
     getQuakes("all", "day").then((val) {
       allDayEarthquakes = earthquakeData.initEarthquakeData(val);
       _getEarthquakesNearMe(allDayEarthquakes).then((val2) {
@@ -66,15 +70,18 @@ class _NearMeState extends State<NearMe> {
                     child: new GestureDetector(
                       child: new Text('Change Range'),
                       onTap: () {
-                        // does not call this method
-                        _showDialog().then<void>((value) {
-                          // The value passed to Navigator.pop() or null.
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return _getAlertDialog();
+                            }).then((value) {
                           if (value != null) {
+                            print("value: $value");
                             setState(() {
-                              print("value: $value");
                               range = int.parse(value);
-                              print("range: $range");
+                              _getData();
                             });
+                            print("range: $range");
                           }
                         });
                       },
@@ -94,43 +101,41 @@ class _NearMeState extends State<NearMe> {
     );
   }
 
-  _showDialog() async {
-    await showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            contentPadding: const EdgeInsets.all(16.0),
-            content: new Row(
-              children: <Widget>[
-                new Expanded(
-                  child: new TextField(
-                    autofocus: true,
-                    controller: _controller,
-                    decoration: new InputDecoration(
-                        labelText: 'Range', hintText: 'eg. 100'),
-                  ),
-                ),
-                new Padding(
-                  padding: const EdgeInsets.only(top: 12.0),
-                  child: new Text("mi."),
-                ),
-              ],
+  _getAlertDialog() {
+    print("get alert dialog");
+    _controller.clear();
+    return new AlertDialog(
+      contentPadding: const EdgeInsets.all(16.0),
+      content: new Row(
+        children: <Widget>[
+          new Expanded(
+            child: new TextField(
+              autofocus: true,
+              controller: _controller,
+              decoration:
+                  new InputDecoration(labelText: 'Range', hintText: 'eg. 100'),
             ),
-            actions: <Widget>[
-              new FlatButton(
-                  child: const Text('CANCEL'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }),
-              new FlatButton(
-                  child: const Text('CHANGE'),
-                  onPressed: () {
-                    print("Text: ${_controller.text}");
-                    Navigator.of(context).pop(_controller.text);
-                  })
-            ],
-          );
-        });
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: new Text("mi."),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+            child: const Text('CANCEL'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
+        new FlatButton(
+            child: const Text('CHANGE'),
+            onPressed: () {
+              print("Text: ${_controller.text}");
+              Navigator.of(context).pop<String>(_controller.text);
+            })
+      ],
+    );
   }
 
   Future<List<Widget>> _getEarthquakesNearMe(List<Earthquake> allDay) async {
