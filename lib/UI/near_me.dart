@@ -43,7 +43,8 @@ class _NearMeState extends State<NearMe> {
   @override
   Widget build(BuildContext context) {
     return new Card(
-      color: Colors.lightBlue[200],
+      // color: Colors.lightBlue[200],
+      color: Colors.grey[300],
       child: new ExpansionTile(
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,11 +57,15 @@ class _NearMeState extends State<NearMe> {
                   "Earthquakes Near Me",
                   style: new TextStyle(
                     fontSize: 16.0,
+                    color: Colors.black,
                   ),
                 ),
                 new Text(
                   "Range: $range mi.",
-                  style: new TextStyle(fontSize: 12.0),
+                  style: new TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),
@@ -87,15 +92,18 @@ class _NearMeState extends State<NearMe> {
                         });
                       },
                     ),
-                  )
+                  ),
                 ];
               },
             ),
           ],
         ),
         leading: new CircleAvatar(
-          backgroundColor: Colors.blue,
-          child: new Text('${earthquakeWidgets.length}'),
+          backgroundColor: Colors.red,
+          child: new Text(
+            '${earthquakeWidgets.length}',
+            style: new TextStyle(color: Colors.white),
+          ),
         ),
         children: earthquakeWidgets,
       ),
@@ -164,7 +172,11 @@ class _NearMeState extends State<NearMe> {
   Widget _getEarthquakeWidget(Earthquake earthquake) {
     return new ListTile(
       leading: new CircleAvatar(
-        child: new Text('${earthquake.mag}'),
+        child: new Text(
+          '${earthquake.mag}',
+          style: new TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
       ),
       title: new Text('${earthquake.place}'),
       subtitle: new Text('${earthquake.time}'),

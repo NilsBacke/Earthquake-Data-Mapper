@@ -42,7 +42,8 @@ class _ExpansionListState extends State<ExpansionList> {
       // height: 300.0,
       // margin: new EdgeInsets.all(20.0),
       child: new Card(
-        color: Colors.lightBlue[200],
+        color: Colors.grey[300],
+        // color: Colors.lightBlue[200],
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -100,7 +101,11 @@ class EntryItem extends StatelessWidget {
           title: new Text(root.title),
           subtitle: new Text(e.time),
           leading: new CircleAvatar(
-            child: new Text('${e.mag}'),
+            child: new Text(
+              '${e.mag}',
+              style: new TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
           ),
           onTap: () {
             print("tap");
@@ -118,7 +123,10 @@ class EntryItem extends StatelessWidget {
     }
     return new ExpansionTile(
       key: new PageStorageKey<Entry>(root),
-      title: new Text(root.title),
+      title: new Text(
+        root.title,
+        style: new TextStyle(color: Colors.black),
+      ),
       children: root.children.map(_buildTiles).toList(),
     );
   }

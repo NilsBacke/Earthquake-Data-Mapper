@@ -79,10 +79,11 @@ class _HomeState extends State<Home> {
         appBar: new AppBar(
           title: new Text("Earthquake Data Mapper"),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.red,
         ),
         body: new Container(
-          decoration: _gradient(),
+          // decoration: _gradient(),
+          color: const Color(0xFF404040),
           child: new RefreshIndicator(
             key: refreshKey,
             child: new ListView(

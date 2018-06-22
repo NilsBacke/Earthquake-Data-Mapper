@@ -25,7 +25,9 @@ class _HeaderCardState extends State<HeaderCard> {
   @override
   Widget build(BuildContext context) {
     return new Card(
-      color: Colors.lightBlue[200],
+      // color: Colors.lightBlue[200],
+      // color: Colors.red,
+      color: Colors.grey[300],
       child: new Row(
         // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -36,7 +38,7 @@ class _HeaderCardState extends State<HeaderCard> {
             style: new TextStyle(
               fontSize: 75.0,
               fontWeight: FontWeight.w100,
-              color: Colors.black,
+              color: Colors.red[600],
             ),
           ),
           new Container(
@@ -60,6 +62,7 @@ class _HeaderCardState extends State<HeaderCard> {
                         child: new Text(
                           "View all",
                         ),
+                        textColor: Colors.red,
                         onPressed: () {
                           print("pressed");
                           setState(() {

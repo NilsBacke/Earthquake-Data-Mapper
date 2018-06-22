@@ -34,7 +34,8 @@ class _MostSigListState extends State<MostSigList> {
     }
     return new Container(
       child: new Card(
-        color: Colors.lightBlue[200],
+        // color: Colors.lightBlue[200],
+        color: Colors.grey[300],
         child: new Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,83 +81,81 @@ class _MostSigListState extends State<MostSigList> {
         height: 400);
 
     return new Container(
-      color: Colors.lightBlue[200],
+      // color: Colors.lightBlue[200],
       width: 336.0,
-      child: new Card(
-        color: Colors.lightBlue[100],
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new Row(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Container(
-                  width: 180.0,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      new Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: new Text(
-                          "Magnitude: ${sigWeekEarthquakes[i].mag}",
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          new Row(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              new Container(
+                width: 180.0,
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        "Magnitude: ${sigWeekEarthquakes[i].mag}",
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      new Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: new Text(
-                          sigWeekEarthquakes[i].time.toString(),
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                          ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        sigWeekEarthquakes[i].time.toString(),
+                        style: new TextStyle(
+                          fontSize: 14.0,
                         ),
                       ),
-                      new Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: new Text(
-                          sigWeekEarthquakes[i].place,
-                          style: new TextStyle(
-                            fontSize: 14.0,
-                          ),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Text(
+                        sigWeekEarthquakes[i].place,
+                        style: new TextStyle(
+                          fontSize: 14.0,
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              new Expanded(
+                child: new Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: new Container(
+                    child: new Image.network(staticMapUri.toString()),
                   ),
                 ),
-                new Expanded(
-                  child: new Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Container(
-                      child: new Image.network(staticMapUri.toString()),
-                    ),
+              ),
+            ],
+          ),
+          new ButtonTheme.bar(
+            child: ButtonBar(
+              alignment: MainAxisAlignment.end,
+              children: <Widget>[
+                new FlatButton(
+                  child: new Text(
+                    "View on map",
                   ),
+                  textColor: Colors.red,
+                  onPressed: () {
+                    setState(() {
+                      earthquakeData.showMapAtMarker(marker);
+                    });
+                  },
                 ),
               ],
             ),
-            new ButtonTheme.bar(
-              child: ButtonBar(
-                alignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  new FlatButton(
-                    child: new Text(
-                      "View on map",
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        earthquakeData.showMapAtMarker(marker);
-                      });
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
