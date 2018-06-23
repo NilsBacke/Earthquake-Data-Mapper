@@ -1,6 +1,6 @@
 # Earthquake Data Mapper
 
- <img width="934" height="479" src="screenshots/screenshot1.jpg">
+ <img width="479" height="934" src="screenshots/screenshot1.jpg">
 ![Screenshot](screenshots/screenshot1.jpg | width=100)
 ![Screenshot](screenshots/screenshot2.jpg)
 ![Screenshot](screenshots/screenshot3.jpg)
