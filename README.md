@@ -1,11 +1,10 @@
 # Earthquake Data Mapper
 
- <img width="479" height="934" src="screenshots/screenshot1.jpg">
-![Screenshot](screenshots/screenshot1.jpg | width=100)
-![Screenshot](screenshots/screenshot2.jpg)
-![Screenshot](screenshots/screenshot3.jpg)
-![Screenshot](screenshots/screenshot4.jpg)
-![Screenshot](screenshots/screenshot5.jpg)
+ <img width="359" height="693" src="screenshots/screenshot1.jpg">
+  <img width="359" height="693" src="screenshots/screenshot2.jpg">
+   <img width="359" height="693" src="screenshots/screenshot3.jpg">
+    <img width="359" height="693" src="screenshots/screenshot4.jpg">
+     <img width="359" height="693" src="screenshots/screenshot5.jpg">
 
 # Description
 
