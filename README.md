@@ -1,10 +1,10 @@
 # Earthquake Data Mapper
 
-![Screenshot](screenshots/screenshot1.png)
-![Screenshot](screenshots/screenshot2.png)
-![Screenshot](screenshots/screenshot3.png)
-![Screenshot](screenshots/screenshot4.png)
-![Screenshot](screenshots/screenshot5.png)
+![Screenshot](screenshots/screenshot1.jpg)
+![Screenshot](screenshots/screenshot2.jpg)
+![Screenshot](screenshots/screenshot3.jpg)
+![Screenshot](screenshots/screenshot4.jpg)
+![Screenshot](screenshots/screenshot5.jpg)
 
 Earthquake Data Mapper allows you to keep track of current earthquakes. 
 
