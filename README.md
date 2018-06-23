@@ -1,37 +1,9 @@
 # Earthquake Data Mapper
 
-
-<div class="row">
-  <div class="column">
+<div class="center">
     <img width="359" height="693" src="screenshots/screenshot1.jpg">
   </div>
- <div class="column">
-    <img width="359" height="693" src="screenshots/screenshot2.jpg">
-  </div>
- <div class="column">
-    <img width="359" height="693" src="screenshots/screenshot3.jpg">
-  </div>
- <div class="column">
-    <img width="359" height="693" src="screenshots/screenshot4.jpg">
-  </div>
- <div class="column">
-    <img width="359" height="693" src="screenshots/screenshot5.jpg">
-  </div>
-</div>
 
-/* Three image containers (use 25% for four, and 50% for two, etc) */
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 5px;
-}
-
-/* Clear floats after image containers */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
 
 # Description
 
@@ -71,7 +43,10 @@ A count of the number of earthquakes that happened in the past hour and week, no
 An about page
 
 
-
+<img width="359" height="693" src="screenshots/screenshot2.jpg">
+<img width="359" height="693" src="screenshots/screenshot3.jpg">
+<img width="359" height="693" src="screenshots/screenshot4.jpg">
+<img width="359" height="693" src="screenshots/screenshot5.jpg">
 
 App icon made by Freepik from www.flaticon.com
 
