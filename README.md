@@ -19,6 +19,20 @@
   </div>
 </div>
 
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 # Description
 
 Earthquake Data Mapper allows you to keep track of current earthquakes. 
