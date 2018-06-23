@@ -16,7 +16,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="earthquake_data_mapper"
+        android:label="Earthquake Data Mapper"
         android:icon="@mipmap/ic_launcher">
         <activity android:name="com.apptreesoftware.mapview.MapActivity" android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity

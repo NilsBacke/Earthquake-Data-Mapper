@@ -11,10 +11,16 @@ dependencies:
   map_view: "^0.0.12"
   intl: "^0.15.4"
   geolocation: "^0.2.1"
+  flutter_launcher_icons: "^0.5.2"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "images/icon.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -32,10 +38,6 @@ flutter:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
-
-  assets:
-    - images/cracks.jpg
-    - images/lava.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

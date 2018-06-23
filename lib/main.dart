@@ -8,9 +8,15 @@ import 'dart:async';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 
+// Icon made by Freepik from www.flaticon.com
+
 void main() {
   MapView.setApiKey(apiKey);
-  runApp(new Home());
+  runApp(new MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: "Earthquake Data Mapper",
+    home: new Home(),
+  ));
 }
 
 class Home extends StatefulWidget {
@@ -71,42 +77,23 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Earthquake Data Mapper",
-      home: new Scaffold(
-        key: scaffoldKey,
-        appBar: new AppBar(
-          title: new Text("Earthquake Data Mapper"),
-          centerTitle: true,
-          backgroundColor: Colors.red,
-        ),
-        body: new Container(
-          // decoration: _gradient(),
-          color: const Color(0xFF404040),
-          child: new RefreshIndicator(
-            key: refreshKey,
-            child: new ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: homePageWidgets,
-            ),
-            onRefresh: refreshHomePage,
-          ),
-        ),
+    return new Scaffold(
+      key: scaffoldKey,
+      appBar: new AppBar(
+        title: new Text("Earthquake Data Mapper"),
+        centerTitle: true,
+        backgroundColor: Colors.red,
       ),
-    );
-  }
-
-  BoxDecoration _gradient() {
-    return new BoxDecoration(
-      gradient: new LinearGradient(
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-        // stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-        colors: [
-          Colors.blue[100],
-          Colors.blue[100],
-        ],
+      body: new Container(
+        color: const Color(0xFF404040),
+        child: new RefreshIndicator(
+          key: refreshKey,
+          child: new ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: homePageWidgets,
+          ),
+          onRefresh: refreshHomePage,
+        ),
       ),
     );
   }

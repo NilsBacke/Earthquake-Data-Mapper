@@ -162,6 +162,7 @@ class _MostSigListState extends State<MostSigList> {
 
   Widget noSigCard() {
     return new Container(
+      color: Colors.grey[300],
       height: 220.0,
       width: 400.0,
       child: new Card(
