@@ -1,10 +1,23 @@
 # Earthquake Data Mapper
 
- <img width="359" height="693" src="screenshots/screenshot1.jpg">
-  <img width="359" height="693" src="screenshots/screenshot2.jpg">
-   <img width="359" height="693" src="screenshots/screenshot3.jpg">
+
+<div class="row">
+  <div class="column">
+    <img width="359" height="693" src="screenshots/screenshot1.jpg">
+  </div>
+ <div class="column">
+    <img width="359" height="693" src="screenshots/screenshot2.jpg">
+  </div>
+ <div class="column">
+    <img width="359" height="693" src="screenshots/screenshot3.jpg">
+  </div>
+ <div class="column">
     <img width="359" height="693" src="screenshots/screenshot4.jpg">
-     <img width="359" height="693" src="screenshots/screenshot5.jpg">
+  </div>
+ <div class="column">
+    <img width="359" height="693" src="screenshots/screenshot5.jpg">
+  </div>
+</div>
 
 # Description
 
