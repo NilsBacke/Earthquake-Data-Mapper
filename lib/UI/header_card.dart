@@ -22,21 +22,6 @@ class _HeaderCardState extends State<HeaderCard> {
     });
   }
 
-  // showMap() {
-  //   mapView.show(new MapOptions(
-  //     mapViewType: MapViewType.normal,
-  //     showUserLocation: true,
-  //     title: "Testing",
-  //   ));
-  //   mapView.onMapReady.listen((_) {
-  //     print("ready");
-  //     mapView.setMarkers([
-  //       new Marker("0", "Test", 45.525, -122.687),
-  //       new Marker("1", "Test", 45.565, -122.687)
-  //     ]);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return new Card(

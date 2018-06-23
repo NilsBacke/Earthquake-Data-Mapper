@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
 
   Future<Null> refreshHomePage() async {
     final Completer<Null> completer = new Completer();
-    new Timer(const Duration(seconds: 1), () {
+    new Timer(const Duration(seconds: 2), () {
       completer.complete(null);
     });
     return completer.future.then((_) {

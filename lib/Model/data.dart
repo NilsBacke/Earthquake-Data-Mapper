@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
 import 'earthquake.dart';
-import 'package:flutter/material.dart';
 
 const apiKey = "AIzaSyCEyNI6shSh4cpI3Ne6jQBxqTBGzBr4Kz0";
 

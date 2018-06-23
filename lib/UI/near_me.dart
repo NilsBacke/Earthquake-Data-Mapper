@@ -8,22 +8,23 @@ import 'dart:math';
 import 'package:map_view/marker.dart';
 import 'package:geolocation/geolocation.dart';
 
-int range = 1000; // miles
-
-enum ChangeRange { changeRange }
-
 class NearMe extends StatefulWidget {
   @override
   _NearMeState createState() => _NearMeState();
 }
 
-class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
+class _NearMeState extends State<NearMe> {
   List<Widget> earthquakeWidgets = new List();
   List<Earthquake> allDayEarthquakes = new List();
   EarthquakeData earthquakeData = new EarthquakeData();
+  final _controller = TextEditingController();
+
+  int range = 2500; // miles
+
   @override
   void initState() {
     super.initState();
+    print("init");
     getQuakes("all", "day").then((val) {
       allDayEarthquakes = earthquakeData.initEarthquakeData(val);
       _getEarthquakesNearMe(allDayEarthquakes).then((val2) {
@@ -42,12 +43,42 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            new Text("Earthquakes Near Me"),
+            new Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "Earthquakes Near Me",
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                new Text(
+                  "Range: $range mi.",
+                  style: new TextStyle(fontSize: 12.0),
+                ),
+              ],
+            ),
             new PopupMenuButton(
               itemBuilder: (_) {
                 return [
                   new PopupMenuItem(
-                    child: new Text('Change Range'),
+                    child: new GestureDetector(
+                      child: new Text('Change Range'),
+                      onTap: () {
+                        // does not call this method
+                        _showDialog().then<void>((value) {
+                          // The value passed to Navigator.pop() or null.
+                          if (value != null) {
+                            setState(() {
+                              print("value: $value");
+                              range = int.parse(value);
+                              print("range: $range");
+                            });
+                          }
+                        });
+                      },
+                    ),
                   )
                 ];
               },
@@ -56,14 +87,50 @@ class _NearMeState extends State<NearMe> with SingleTickerProviderStateMixin {
         ),
         leading: new CircleAvatar(
           backgroundColor: Colors.red,
-          child: new GestureDetector(
-            onTap: () => debugPrint("pressed"),
-            child: new Text('${earthquakeWidgets.length}'),
-          ),
+          child: new Text('${earthquakeWidgets.length}'),
         ),
         children: earthquakeWidgets,
       ),
     );
+  }
+
+  _showDialog() async {
+    await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            contentPadding: const EdgeInsets.all(16.0),
+            content: new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new TextField(
+                    autofocus: true,
+                    controller: _controller,
+                    decoration: new InputDecoration(
+                        labelText: 'Range', hintText: 'eg. 100'),
+                  ),
+                ),
+                new Padding(
+                  padding: const EdgeInsets.only(top: 12.0),
+                  child: new Text("mi."),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                  child: const Text('CANCEL'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              new FlatButton(
+                  child: const Text('CHANGE'),
+                  onPressed: () {
+                    print("Text: ${_controller.text}");
+                    Navigator.of(context).pop(_controller.text);
+                  })
+            ],
+          );
+        });
   }
 
   Future<List<Widget>> _getEarthquakesNearMe(List<Earthquake> allDay) async {
