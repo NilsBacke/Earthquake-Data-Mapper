@@ -42,6 +42,7 @@ A count of the number of earthquakes that happened in the past hour and week, no
 
 An about page
 
+# More Screenshots
 
 <img width="359" height="693" src="screenshots/screenshot2.jpg">
 <img width="359" height="693" src="screenshots/screenshot3.jpg">
