@@ -15,7 +15,7 @@ Become aware of the significant earthquakes happening around the world.
 
 
 
-Features:
+# Features:
 
 A map view filled with markers of all of the earthquakes that occurred today.
 
@@ -34,7 +34,7 @@ Earthquake Data Mapper is 100% free with no ads or in-app purchases!!!
 
 
 
-What's to come:
+# What's to come:
 
 A settings page - for a customizable user experience.
 
@@ -49,8 +49,3 @@ An about page
 <img width="359" height="693" src="screenshots/screenshot5.jpg">
 
 App icon made by Freepik from www.flaticon.com
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
