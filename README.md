@@ -1,5 +1,7 @@
 # Earthquake Data Mapper
 
+<a href='https://play.google.com/store/apps/details?id=com.plushundred.earthquakedatamapper&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
 <div class="center">
     <img width="359" height="693" src="screenshots/screenshot1.jpg">
   </div>
