@@ -1,0 +1,13 @@
+lib/Model/api_info.dart
+
+.DS_Store
+.dart_tool/
+
+android/key.properties
+
+.packages
+.pub/
+
+build/
+
+.flutter-plugins
