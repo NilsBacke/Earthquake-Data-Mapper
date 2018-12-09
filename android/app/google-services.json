@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "888955816619",
+    "firebase_url": "https://earthquake-data-mapper-bfb66.firebaseio.com",
+    "project_id": "earthquake-data-mapper-bfb66",
+    "storage_bucket": "earthquake-data-mapper-bfb66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888955816619:android:12f16116d995e6e7",
+        "android_client_info": {
+          "package_name": "com.plushundred.earthquakedatamapper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888955816619-5brorbfpndhf6o9l7ctv75hia6qn32ic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgf7_17qGMxO2l0uRYhCTW_F1jFyPNMIg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,6 +12,12 @@ dependencies:
   intl: "^0.15.4"
   # geolocation: "^0.2.1"
   # flutter_launcher_icons: "^0.5.2"
+  cloud_firestore: "^0.7.3"
+  firebase_core: any
+  firebase_auth: any
+  firebase_messaging: any
+  location: "^1.4.1"
+  auto_size_text: ^0.3.0
 
 dev_dependencies:
   flutter_test:

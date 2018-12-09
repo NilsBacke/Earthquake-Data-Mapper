@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-// import 'package:location/location.dart';
 import 'package:map_view/marker.dart';
-// import 'package:geolocation/geolocation.dart';
+import 'package:location/location.dart';
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
+
+final Firestore db = Firestore.instance;
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 class NearMe extends StatefulWidget {
   @override
@@ -20,13 +24,14 @@ class _NearMeState extends State<NearMe> {
   EarthquakeData earthquakeData = new EarthquakeData();
   final _controller = TextEditingController();
 
-  int range = 2000; // miles
+  int range = 200; // miles
 
   @override
   void initState() {
     super.initState();
     print("init");
     _getData();
+    _getRange();
   }
 
   _getData() async {
@@ -43,6 +48,7 @@ class _NearMeState extends State<NearMe> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return new Card(
       // color: Colors.lightBlue[200],
       color: colors.color,
@@ -57,7 +63,7 @@ class _NearMeState extends State<NearMe> {
                 new Text(
                   "Earthquakes Near Me",
                   style: new TextStyle(
-                    fontSize: 16.0,
+                    fontSize: width <= 320 ? 12.0 : 14.0,
                     color: Colors.black,
                   ),
                 ),
@@ -75,7 +81,9 @@ class _NearMeState extends State<NearMe> {
                 return [
                   new PopupMenuItem(
                     child: new GestureDetector(
-                      child: new Text('Change Range'),
+                      child: Container(
+                        child: new Text('Change Range'),
+                      ),
                       onTap: () {
                         showDialog(
                             context: context,
@@ -86,6 +94,7 @@ class _NearMeState extends State<NearMe> {
                             print("value: $value");
                             setState(() {
                               range = int.parse(value);
+                              _saveRange();
                               _getData();
                             });
                             print("range: $range");
@@ -149,23 +158,27 @@ class _NearMeState extends State<NearMe> {
   }
 
   Future<List<Widget>> _getEarthquakesNearMe(List<Earthquake> allDay) async {
-    List<Widget> widgets = new List();
+    List<Widget> widgets = new List<Widget>();
 
-    // // force a single location update
-    // LocationResult currentLocation = await Geolocation.lastKnownLocation();
+    var currentLocation = <String, double>{};
 
-    // if (currentLocation.isSuccessful) {
-    //   debugPrint('length: ${allDay.length}');
-    //   for (int i = 0; i < allDay.length; i++) {
-    //     double d = _getDistance(currentLocation.location.latitude,
-    //         currentLocation.location.longitude, allDay[i].lat, allDay[i].long);
-    //     debugPrint('dist: $d');
-    //     if (d <= range) {
-    //       debugPrint("add widget");
-    //       widgets.add(_getEarthquakeWidget(allDay[i]));
-    //     }
-    //   }
-    // }
+    var location = new CurrentLocation();
+
+    currentLocation = await location.getLocation();
+
+    if (currentLocation == null) {
+      return new List<Widget>();
+    }
+
+    for (int i = 0; i < allDay.length; i++) {
+      double d = _getDistance(currentLocation['latitude'],
+          currentLocation['longitude'], allDay[i].lat, allDay[i].long);
+      debugPrint('dist: $d');
+      if (d <= range) {
+        debugPrint("add widget");
+        widgets.add(_getEarthquakeWidget(allDay[i]));
+      }
+    }
 
     return widgets;
   }
@@ -209,4 +222,29 @@ class _NearMeState extends State<NearMe> {
   }
 
   double _degToRad(double degrees) => degrees * (pi / 180);
+
+  void _saveRange() {
+    _firebaseMessaging.getToken().then((getToken) {
+      var token = getToken;
+      db
+          .collection('locations')
+          .document(token)
+          .setData({'range': range}, merge: true);
+    });
+  }
+
+  void _getRange() {
+    _firebaseMessaging.getToken().then((getToken) {
+      var token = getToken;
+      db.collection('locations').document(token).get().then((snapshot) {
+        setState(() {
+          if (snapshot.data['range'] != null) {
+            range = snapshot.data['range'];
+          } else {
+            range = 100;
+          }
+        });
+      });
+    });
+  }
 }

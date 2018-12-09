@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:map_view/map_view.dart';
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HeaderCard extends StatefulWidget {
   @override
@@ -26,20 +27,22 @@ class _HeaderCardState extends State<HeaderCard> {
   @override
   Widget build(BuildContext context) {
     return new Card(
-      // color: Colors.lightBlue[200],
-      // color: Colors.red,
       color: colors.color,
       child: new Row(
-        // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          new Text(
-            allDayEarthquakes.length.toString(),
-            textDirection: TextDirection.ltr,
-            style: new TextStyle(
-              fontSize: 75.0,
-              fontWeight: FontWeight.w100,
-              color: Colors.red[600],
+          new Container(
+            width: MediaQuery.of(context).size.width / 10 * 3.75,
+            child: new AutoSizeText(
+              allDayEarthquakes.length.toString(),
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.center,
+              style: new TextStyle(
+                fontSize: 75.0,
+                fontWeight: FontWeight.w100,
+                color: Colors.red[600],
+              ),
+              maxLines: 1,
             ),
           ),
           new Container(
@@ -49,10 +52,11 @@ class _HeaderCardState extends State<HeaderCard> {
               children: <Widget>[
                 new Container(
                   padding: const EdgeInsets.only(top: 12.0),
-                  child: new Text(
+                  child: new AutoSizeText(
                     "Earthquakes today",
                     style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w400),
+                        fontSize: 18.0, fontWeight: FontWeight.w400),
+                    maxLines: 1,
                   ),
                 ),
                 new ButtonTheme.bar(

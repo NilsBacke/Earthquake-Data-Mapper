@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
+import 'package:auto_size_text/auto_size_text.dart';
+import 'dots_indicator.dart';
 
 const static_maps_api_key = apiInfo.apiKey;
 
@@ -20,6 +22,12 @@ class _MostSigListState extends State<MostSigList> {
   Uri staticMapUri;
 
   final _controller = new PageController();
+
+  static const _kDuration = const Duration(milliseconds: 300);
+
+  static const _kCurve = Curves.ease;
+
+  final _kArrowColor = Colors.black.withOpacity(0.8);
 
   @override
   void initState() {
@@ -38,38 +46,52 @@ class _MostSigListState extends State<MostSigList> {
     }
     return new Container(
       child: new Card(
-        // color: Colors.lightBlue[200],
         color: colors.color,
         child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new Container(
               padding: const EdgeInsets.all(8.0),
-              child: new Text(
+              child: new AutoSizeText(
                 "Most Significant Earthquakes This Week",
                 style: new TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.left,
+                maxLines: 1,
               ),
             ),
-            new Divider(),
+            new Divider(
+              height: 4.0,
+            ),
             new Container(
-                height: 260.0,
-                // child: new ListView.builder(
-                //   scrollDirection: Axis.horizontal,
-                //   itemCount: sigWeekEarthquakes.length,
-                //   itemBuilder: (BuildContext context, int i) {
-                //     return mostSigCard(i);
-                //   },
-                // ),
-                child: new PageView.builder(
-                  physics: PageScrollPhysics(),
+              height: MediaQuery.of(context).size.height * .365,
+              child: new PageView.builder(
+                controller: _controller,
+                itemBuilder: (_, i) {
+                  return mostSigCard(i);
+                },
+              ),
+            ),
+            new Divider(
+              height: 4.0,
+            ),
+            new Container(
+              padding: const EdgeInsets.all(8.0),
+              child: new Center(
+                child: new DotsIndicator(
+                  color: Colors.grey,
                   controller: _controller,
                   itemCount: sigWeekEarthquakes.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return mostSigCard(i % sigWeekEarthquakes.length);
+                  onPageSelected: (int page) {
+                    _controller.animateToPage(
+                      page,
+                      duration: _kDuration,
+                      curve: _kCurve,
+                    );
                   },
-                )),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -85,23 +107,24 @@ class _MostSigListState extends State<MostSigList> {
         'Mag: ${sigWeekEarthquakes[i].mag} | ${sigWeekEarthquakes[i].place}',
         sigWeekEarthquakes[i].lat,
         sigWeekEarthquakes[i].long);
-    staticMapUri = provider.getStaticUriWithMarkers([marker],
-        center:
-            new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),
-        width: 400,
-        height: 400);
+    staticMapUri = provider.getStaticUriWithMarkers(
+      [marker],
+      center:
+          new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),
+      width: 500,
+      height: 500,
+    );
 
     return new Container(
-      // color: Colors.lightBlue[200],
       width: 336.0,
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new Row(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Container(
-                width: 180.0,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,

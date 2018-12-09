@@ -6,6 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 import 'dart:async';
 import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
+import 'package:earthquake_data_mapper/UI/settings_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:location/location.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final Firestore db = Firestore.instance;
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 // Icon made by Freepik from www.flaticon.com
 
@@ -31,6 +38,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    setUpFirebaseMessaging();
     refreshHomePage();
     setState(() {
       homePageWidgets = new List();
@@ -42,6 +50,52 @@ class _HomeState extends State<Home> {
       homePageWidgets.add(new NearMe());
       homePageWidgets.add(new ExpansionList());
     });
+  }
+
+  setUpFirebaseMessaging() async {
+    _firebaseMessaging.requestNotificationPermissions(
+        new IosNotificationSettings(sound: true, badge: true, alert: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    var token = await _firebaseMessaging.getToken();
+    assert(token != null);
+    print("Token: " + token);
+    await saveCurrentLocation(token);
+  }
+
+  saveCurrentLocation(String token) async {
+    var currentLocation = <String, double>{};
+
+    var location = new CurrentLocation();
+
+    currentLocation = await location.getLocation();
+
+    if (currentLocation == null) {
+      return;
+    }
+
+    db.collection('locations').document(token).setData({
+      'token': token,
+      'latitude': currentLocation["latitude"],
+      'longitude': currentLocation['longitude'],
+    }, merge: true);
+
+    var data = await db.collection('locations').document(token).get();
+    if (data.data['maxDist'] == null) {
+      db
+          .collection('locations')
+          .document(token)
+          .setData({'maxDist': 100}, merge: true);
+    }
+
+    if (data.data['minMag'] == null) {
+      db
+          .collection('locations')
+          .document(token)
+          .setData({'minMag': 1}, merge: true);
+    }
   }
 
   Future<Null> refreshHomePage() async {
@@ -74,6 +128,11 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void goToSettings() {
+    Navigator.of(context)
+        .push(new MaterialPageRoute(builder: (context) => SettingsPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -82,9 +141,16 @@ class _HomeState extends State<Home> {
         title: new Text("Earthquake Data Mapper"),
         centerTitle: true,
         backgroundColor: Colors.red,
+        actions: <Widget>[
+          new IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: goToSettings,
+          )
+        ],
       ),
       body: new Container(
         // color: const Color(0xFF404040),
+        padding: EdgeInsets.symmetric(horizontal: 4.0),
         color: Colors.grey[350],
         child: new RefreshIndicator(
           key: refreshKey,

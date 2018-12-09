@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>888955816619-c69l3g7b7i76ondtlve4m8gic3v58go4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.888955816619-c69l3g7b7i76ondtlve4m8gic3v58go4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCe6Bj7clXdCeGvkVpg_Y1d4ZrZXLB0wlY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>888955816619</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.plushundred.earthquakeDataMapper</string>
+	<key>PROJECT_ID</key>
+	<string>earthquake-data-mapper-bfb66</string>
+	<key>STORAGE_BUCKET</key>
+	<string>earthquake-data-mapper-bfb66.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:888955816619:ios:abd354051a1e3de3</string>
+	<key>DATABASE_URL</key>
+	<string>https://earthquake-data-mapper-bfb66.firebaseio.com</string>
+</dict>
+</plist>
