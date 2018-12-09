@@ -94,7 +94,7 @@ class _HomeState extends State<Home> {
       db
           .collection('locations')
           .document(token)
-          .setData({'minMag': 1}, merge: true);
+          .setData({'minMag': 0}, merge: true);
     }
   }
 

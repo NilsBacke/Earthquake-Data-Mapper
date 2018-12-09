@@ -117,6 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
         value: _minMag,
         hint: hint2,
         items: <DropdownMenuItem<int>>[
+          menuItem(0),
           menuItem(1),
           menuItem(2),
           menuItem(3),

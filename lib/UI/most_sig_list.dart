@@ -17,6 +17,7 @@ class MostSigList extends StatefulWidget {
 class _MostSigListState extends State<MostSigList> {
   EarthquakeData earthquakeData = new EarthquakeData();
   List<Earthquake> sigWeekEarthquakes = new List();
+  List<Earthquake> allDayEarthquakes = new List();
 
   var provider = new StaticMapProvider(static_maps_api_key);
   Uri staticMapUri;
@@ -27,14 +28,17 @@ class _MostSigListState extends State<MostSigList> {
 
   static const _kCurve = Curves.ease;
 
-  final _kArrowColor = Colors.black.withOpacity(0.8);
-
   @override
   void initState() {
     super.initState();
     getQuakes("significant", "week").then((val) {
       setState(() {
         sigWeekEarthquakes = earthquakeData.initEarthquakeData(val);
+      });
+    });
+    getQuakes("all", "day").then((val) {
+      setState(() {
+        allDayEarthquakes = earthquakeData.initEarthquakeData(val);
       });
     });
   }
@@ -67,6 +71,7 @@ class _MostSigListState extends State<MostSigList> {
               height: MediaQuery.of(context).size.height * .365,
               child: new PageView.builder(
                 controller: _controller,
+                itemCount: sigWeekEarthquakes.length,
                 itemBuilder: (_, i) {
                   return mostSigCard(i);
                 },
@@ -182,7 +187,7 @@ class _MostSigListState extends State<MostSigList> {
                   textColor: Colors.red,
                   onPressed: () {
                     setState(() {
-                      earthquakeData.showMapAtMarker(marker);
+                      earthquakeData.showMapAtMarker(marker, allDayEarthquakes);
                     });
                   },
                 ),

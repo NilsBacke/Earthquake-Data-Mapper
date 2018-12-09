@@ -43,13 +43,15 @@ class EarthquakeData {
     _setToolbarAction();
   }
 
-  showMapAtMarker(Marker marker) {
+  showMapAtMarker(Marker marker, List<Earthquake> list) {
     _mapView = new MapView();
     _mapView.show(_getMapOptionsFromMarker(marker),
         toolbarActions: [new ToolbarAction("Back", 0)]);
+    List<Marker> markers = getMarkers(list);
+    markers.add(marker);
     _mapView.onMapReady.listen((_) {
-      _mapView.setMarkers([marker]);
-      // _mapView.zoomTo([marker.id]);
+      _mapView.setMarkers(markers);
+      // _mapView.z([marker.id]);
     });
     _setToolbarAction();
   }

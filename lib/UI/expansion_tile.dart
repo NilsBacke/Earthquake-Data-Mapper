@@ -113,7 +113,7 @@ class EntryItem extends StatelessWidget {
             Marker marker;
             marker =
                 new Marker("0", 'Mag: ${e.mag} | ${e.place}', e.lat, e.long);
-            earthquakeData.showMapAtMarker(marker);
+            earthquakeData.showMapAtMarker(marker, allDay);
           },
         );
       } else {
