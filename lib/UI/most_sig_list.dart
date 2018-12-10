@@ -68,7 +68,7 @@ class _MostSigListState extends State<MostSigList> {
               height: 4.0,
             ),
             new Container(
-              height: MediaQuery.of(context).size.height * .365,
+              height: MediaQuery.of(context).size.height * .38,
               child: new PageView.builder(
                 controller: _controller,
                 itemCount: sigWeekEarthquakes.length,
@@ -130,6 +130,7 @@ class _MostSigListState extends State<MostSigList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Container(
+                width: MediaQuery.of(context).size.width / 2 - 4,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,

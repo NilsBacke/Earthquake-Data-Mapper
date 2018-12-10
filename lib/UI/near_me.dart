@@ -32,7 +32,7 @@ class _NearMeState extends State<NearMe> {
     _getData();
   }
 
-  void _getData() {
+  void _getData() async {
     _firebaseMessaging.getToken().then((getToken) {
       var token = getToken;
       db.collection('locations').document(token).get().then((snapshot) {
@@ -42,12 +42,12 @@ class _NearMeState extends State<NearMe> {
           } else {
             range = 100;
           }
-          getQuakes("all", "day").then((val) {
-            allDayEarthquakes = earthquakeData.initEarthquakeData(val);
-            _getEarthquakesNearMe(allDayEarthquakes).then((val2) {
-              setState(() {
-                earthquakeWidgets = val2;
-              });
+        });
+        getQuakes("all", "day").then((val) {
+          allDayEarthquakes = earthquakeData.initEarthquakeData(val);
+          _getEarthquakesNearMe(allDayEarthquakes).then((val2) {
+            setState(() {
+              earthquakeWidgets = val2;
             });
           });
         });
@@ -91,7 +91,9 @@ class _NearMeState extends State<NearMe> {
                   return [
                     new PopupMenuItem(
                       child: new InkWell(
-                          child: new Text('Change Range'), onTap: _showDialog),
+                        onTap: _showDialog,
+                        child: new Text('Change Range'),
+                      ),
                     ),
                   ];
                 },

@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
       db
           .collection('locations')
           .document(token)
-          .setData({'maxDist': 100}, merge: true);
+          .setData({'maxDist': 250}, merge: true);
     }
 
     if (data.data['minMag'] == null) {
