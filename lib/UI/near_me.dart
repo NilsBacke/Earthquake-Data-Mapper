@@ -6,9 +6,10 @@ import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:map_view/marker.dart';
 import 'package:location/location.dart';
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'maps.dart';
 
 final Firestore db = Firestore.instance;
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -220,15 +221,32 @@ class _NearMeState extends State<NearMe> {
       subtitle: new Text('${earthquake.time}'),
       trailing: new Text('$roundedDist mi.'),
       onTap: () {
-        Marker marker;
-        marker = new Marker("0", 'Mag: ${earthquake.mag} | ${earthquake.place}',
-            earthquake.lat, earthquake.long);
-        earthquakeData.showMapAtMarker(marker, allDayEarthquakes);
+        List<MarkerOptions> markers = new List();
+        for (Earthquake e in allDayEarthquakes) {
+          markers.add(
+            new MarkerOptions(
+              visible: true,
+              position: new LatLng(e.lat, e.long),
+              infoWindowText:
+                  new InfoWindowText('Mag: ${e.mag} | ${e.place}', null),
+            ),
+          );
+        }
+        markers.add(
+          new MarkerOptions(
+            visible: true,
+            position: new LatLng(earthquake.lat, earthquake.long),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueAzure),
+          ),
+        );
+        Navigator.of(context).push(new MaterialPageRoute(
+            builder: (BuildContext context) => Maps(markers,
+                zoomTo: new LatLng(earthquake.lat, earthquake.long))));
       },
     );
   }
 
-  // in km
   double _getDistance(
       double homeLat, double homeLon, double earthLat, double earthLon) {
     const r = 6371;

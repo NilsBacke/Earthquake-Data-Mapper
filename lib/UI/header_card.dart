@@ -1,9 +1,10 @@
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
 import 'package:earthquake_data_mapper/Model/data.dart';
-import 'package:map_view/map_view.dart';
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
 import 'package:auto_size_text/auto_size_text.dart';
+import 'maps.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HeaderCard extends StatefulWidget {
   @override
@@ -13,8 +14,6 @@ class HeaderCard extends StatefulWidget {
 class _HeaderCardState extends State<HeaderCard> {
   EarthquakeData earthquakeData = new EarthquakeData();
   List<Earthquake> allDayEarthquakes = new List();
-
-  MapView mapView = new MapView();
 
   _HeaderCardState() {
     getQuakes("all", "day").then((val) {
@@ -70,9 +69,23 @@ class _HeaderCardState extends State<HeaderCard> {
                         textColor: Colors.red,
                         onPressed: () {
                           print("pressed");
-                          setState(() {
-                            earthquakeData.showMap(allDayEarthquakes);
-                          });
+                          // setState(() {
+                          //   earthquakeData.showMap(allDayEarthquakes);
+                          // });
+                          List<MarkerOptions> markers = new List();
+                          for (Earthquake e in allDayEarthquakes) {
+                            markers.add(
+                              new MarkerOptions(
+                                visible: true,
+                                position: new LatLng(e.lat, e.long),
+                                infoWindowText: new InfoWindowText(
+                                    'Mag: ${e.mag} | ${e.place}', null),
+                              ),
+                            );
+                          }
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Maps(markers)));
                         },
                       ),
                     ],

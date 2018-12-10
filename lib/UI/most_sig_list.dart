@@ -1,11 +1,14 @@
 import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
-import 'package:map_view/map_view.dart';
 import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dots_indicator.dart';
+// import 'package:map_view/static_map_provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'maps.dart';
+import 'package:earthquake_data_mapper/Model/static_maps.dart';
 
 const static_maps_api_key = apiInfo.apiKey;
 
@@ -18,9 +21,6 @@ class _MostSigListState extends State<MostSigList> {
   EarthquakeData earthquakeData = new EarthquakeData();
   List<Earthquake> sigWeekEarthquakes = new List();
   List<Earthquake> allDayEarthquakes = new List();
-
-  var provider = new StaticMapProvider(static_maps_api_key);
-  Uri staticMapUri;
 
   final _controller = new PageController();
 
@@ -52,7 +52,7 @@ class _MostSigListState extends State<MostSigList> {
       child: new Card(
         color: colors.color,
         child: new Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             new Container(
@@ -60,16 +60,20 @@ class _MostSigListState extends State<MostSigList> {
               child: new AutoSizeText(
                 "Most Significant Earthquakes This Week",
                 style: new TextStyle(fontSize: 18.0),
-                textAlign: TextAlign.left,
+                textAlign: TextAlign.center,
                 maxLines: 1,
               ),
             ),
             new Divider(
               height: 4.0,
             ),
-            new Container(
-              height: MediaQuery.of(context).size.height * .38,
+            new ConstrainedBox(
+              constraints: new BoxConstraints.tightFor(
+                  height: MediaQuery.of(context).size.height > 700
+                      ? MediaQuery.of(context).size.height * .34
+                      : MediaQuery.of(context).size.height * .41),
               child: new PageView.builder(
+                physics: AlwaysScrollableScrollPhysics(),
                 controller: _controller,
                 itemCount: sigWeekEarthquakes.length,
                 itemBuilder: (_, i) {
@@ -107,21 +111,16 @@ class _MostSigListState extends State<MostSigList> {
     // for significant earthquakes
     // id = 1000 + i
     // 1000, 1001
+    Earthquake earth = sigWeekEarthquakes[i];
     Marker marker = new Marker(
         (1000 + i).toString(),
-        'Mag: ${sigWeekEarthquakes[i].mag} | ${sigWeekEarthquakes[i].place}',
-        sigWeekEarthquakes[i].lat,
-        sigWeekEarthquakes[i].long);
-    staticMapUri = provider.getStaticUriWithMarkers(
-      [marker],
-      center:
-          new Location(sigWeekEarthquakes[i].lat, sigWeekEarthquakes[i].long),
-      width: 500,
-      height: 500,
-    );
+        new MarkerOptions(
+            infoWindowText:
+                new InfoWindowText('Mag: ${earth.mag} | ${earth.place}', null),
+            position: new LatLng(earth.lat, earth.long)));
 
     return new Container(
-      width: 336.0,
+      // width: 336.0,
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -130,7 +129,7 @@ class _MostSigListState extends State<MostSigList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Container(
-                width: MediaQuery.of(context).size.width / 2 - 4,
+                width: MediaQuery.of(context).size.width / 2 - 24.0,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -139,7 +138,7 @@ class _MostSigListState extends State<MostSigList> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        "Magnitude: ${sigWeekEarthquakes[i].mag}",
+                        "Magnitude: ${earth.mag}",
                         style: new TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.bold,
@@ -149,7 +148,7 @@ class _MostSigListState extends State<MostSigList> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        sigWeekEarthquakes[i].time.toString(),
+                        earth.time.toString(),
                         style: new TextStyle(
                           fontSize: 14.0,
                         ),
@@ -158,7 +157,7 @@ class _MostSigListState extends State<MostSigList> {
                     new Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: new Text(
-                        sigWeekEarthquakes[i].place,
+                        earth.place,
                         style: new TextStyle(
                           fontSize: 14.0,
                         ),
@@ -169,9 +168,13 @@ class _MostSigListState extends State<MostSigList> {
               ),
               new Expanded(
                 child: new Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(
+                      top: 8.0, bottom: 4.0, left: 4.0, right: 8.0),
                   child: new Container(
-                    child: new Image.network(staticMapUri.toString()),
+                    child: new StaticMapsProvider(
+                      static_maps_api_key,
+                      marker: marker,
+                    ),
                   ),
                 ),
               ),
@@ -187,9 +190,28 @@ class _MostSigListState extends State<MostSigList> {
                   ),
                   textColor: Colors.red,
                   onPressed: () {
-                    setState(() {
-                      earthquakeData.showMapAtMarker(marker, allDayEarthquakes);
-                    });
+                    List<MarkerOptions> markers = new List();
+                    for (Earthquake e in allDayEarthquakes) {
+                      markers.add(
+                        new MarkerOptions(
+                          visible: true,
+                          position: new LatLng(e.lat, e.long),
+                          infoWindowText: new InfoWindowText(
+                              'Mag: ${e.mag} | ${e.place}', null),
+                        ),
+                      );
+                    }
+                    markers.add(
+                      new MarkerOptions(
+                        visible: true,
+                        position: new LatLng(earth.lat, earth.long),
+                        icon: BitmapDescriptor.defaultMarkerWithHue(
+                            BitmapDescriptor.hueAzure),
+                      ),
+                    );
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (BuildContext context) => Maps(markers,
+                            zoomTo: new LatLng(earth.lat, earth.long))));
                   },
                 ),
               ],

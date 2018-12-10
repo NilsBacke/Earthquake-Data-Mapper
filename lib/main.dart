@@ -3,7 +3,6 @@ import 'package:earthquake_data_mapper/UI/header_card.dart';
 import 'package:earthquake_data_mapper/UI/most_sig_list.dart';
 import 'package:earthquake_data_mapper/UI/near_me.dart';
 import 'package:flutter/material.dart';
-import 'package:map_view/map_view.dart';
 import 'dart:async';
 import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
 import 'package:earthquake_data_mapper/UI/settings_page.dart';
@@ -17,7 +16,7 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 // Icon made by Freepik from www.flaticon.com
 
 void main() {
-  MapView.setApiKey(apiInfo.apiKey);
+  // MapView.setApiKey(apiInfo.apiKey);
   runApp(new MaterialApp(
     debugShowCheckedModeBanner: false,
     title: "Earthquake Data Mapper",

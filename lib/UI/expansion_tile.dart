@@ -1,8 +1,9 @@
 import 'package:earthquake_data_mapper/Model/data.dart';
 import 'package:earthquake_data_mapper/Model/earthquake.dart';
 import 'package:flutter/material.dart';
-import 'package:map_view/map_view.dart';
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'maps.dart';
 
 class ExpansionList extends StatefulWidget {
   @override
@@ -61,6 +62,7 @@ class _ExpansionListState extends State<ExpansionList> {
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int i) {
                 return new EntryItem(
+                    context,
                     expansionData[i],
                     allHourEarthquakes,
                     allDayEarthquakes,
@@ -78,9 +80,10 @@ class _ExpansionListState extends State<ExpansionList> {
 }
 
 class EntryItem extends StatelessWidget {
-  EntryItem(
-      this.entry, this.allHour, this.allDay, this.allWeek, this.earthquakeData);
+  EntryItem(this.context, this.entry, this.allHour, this.allDay, this.allWeek,
+      this.earthquakeData);
 
+  final BuildContext context;
   final Entry entry;
   final List<Earthquake> allHour;
   final List<Earthquake> allDay;
@@ -109,11 +112,28 @@ class EntryItem extends StatelessWidget {
             backgroundColor: Colors.red,
           ),
           onTap: () {
-            print("tap");
-            Marker marker;
-            marker =
-                new Marker("0", 'Mag: ${e.mag} | ${e.place}', e.lat, e.long);
-            earthquakeData.showMapAtMarker(marker, allDay);
+            List<MarkerOptions> markers = new List();
+            for (Earthquake e in allDay) {
+              markers.add(
+                new MarkerOptions(
+                  visible: true,
+                  position: new LatLng(e.lat, e.long),
+                  infoWindowText:
+                      new InfoWindowText('Mag: ${e.mag} | ${e.place}', null),
+                ),
+              );
+            }
+            markers.add(
+              new MarkerOptions(
+                visible: true,
+                position: new LatLng(e.lat, e.long),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueAzure),
+              ),
+            );
+            Navigator.of(context).push(new MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    Maps(markers, zoomTo: new LatLng(e.lat, e.long))));
           },
         );
       } else {
