@@ -22,8 +22,13 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Earthquake Data Mapper"),
+        centerTitle: true,
+        backgroundColor: Colors.red,
+      ),
+      body: Center(
         child: GoogleMap(
           onMapCreated: _onMapCreated,
           options: GoogleMapOptions(
