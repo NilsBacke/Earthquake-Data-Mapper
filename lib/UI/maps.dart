@@ -58,7 +58,7 @@ class _MapsState extends State<Maps> {
 
     if (zoomTo != null) {
       pos = zoomTo;
-      zoom = 12;
+      zoom = 10;
     }
 
     controller.animateCamera(CameraUpdate.newLatLngZoom(pos, zoom));

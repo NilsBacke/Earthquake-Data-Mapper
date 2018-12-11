@@ -4,6 +4,8 @@ lib/Model/api_info.dart
 .dart_tool/
 
 android/key.properties
+android/app/key.jks
+android/app/key2.jks
 
 .packages
 .pub/

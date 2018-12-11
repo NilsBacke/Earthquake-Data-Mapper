@@ -41,7 +41,7 @@ class _NearMeState extends State<NearMe> {
           if (snapshot.data['range'] != null) {
             range = snapshot.data['range'];
           } else {
-            range = 100;
+            range = 250;
           }
         });
         getQuakes("all", "day").then((val) {

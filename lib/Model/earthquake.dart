@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
 
 class Earthquake {
-  final mag;
+  final num mag;
   String place;
   var time;
-  final url;
-  final lat;
-  final long;
+  final String url;
+  final double lat;
+  final double long;
 
   Earthquake({this.mag, this.place, this.time, this.url, this.lat, this.long}) {
     time = _getTime(this.time);

@@ -5,7 +5,6 @@ import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
 import 'package:earthquake_data_mapper/UI/colors.dart' as colors;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dots_indicator.dart';
-// import 'package:map_view/static_map_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'maps.dart';
 import 'package:earthquake_data_mapper/Model/static_maps.dart';
@@ -32,8 +31,10 @@ class _MostSigListState extends State<MostSigList> {
   void initState() {
     super.initState();
     getQuakes("significant", "week").then((val) {
+      var temp = earthquakeData.initEarthquakeData(val);
+      temp.sort((e1, e2) => e2.mag.compareTo(e1.mag));
       setState(() {
-        sigWeekEarthquakes = earthquakeData.initEarthquakeData(val);
+        sigWeekEarthquakes = temp;
       });
     });
     getQuakes("all", "day").then((val) {
@@ -57,11 +58,13 @@ class _MostSigListState extends State<MostSigList> {
           children: <Widget>[
             new Container(
               padding: const EdgeInsets.all(8.0),
-              child: new AutoSizeText(
-                "Most Significant Earthquakes This Week",
-                style: new TextStyle(fontSize: 18.0),
-                textAlign: TextAlign.center,
-                maxLines: 1,
+              child: new Center(
+                child: new AutoSizeText(
+                  "Most Significant Earthquakes This Week",
+                  style: new TextStyle(fontSize: 18.0),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                ),
               ),
             ),
             new Divider(
@@ -69,8 +72,12 @@ class _MostSigListState extends State<MostSigList> {
             ),
             new ConstrainedBox(
               constraints: new BoxConstraints.tightFor(
-                  height: MediaQuery.of(context).size.height > 700
-                      ? MediaQuery.of(context).size.height * .34
+                  height: MediaQuery.of(context).size.height > 600
+                      ? MediaQuery.of(context).size.width > 400
+                          ? MediaQuery.of(context).size.width > 700
+                              ? MediaQuery.of(context).size.height * .45
+                              : MediaQuery.of(context).size.height * .4
+                          : MediaQuery.of(context).size.height * .35
                       : MediaQuery.of(context).size.height * .41),
               child: new PageView.builder(
                 physics: AlwaysScrollableScrollPhysics(),

@@ -166,7 +166,7 @@ DEPENDENCIES:
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `Pods/.symlinks/plugins/firebase_messaging/ios`)
-  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - Flutter (from `Pods/.symlinks/flutter/ios-release`)
   - google_maps_flutter (from `Pods/.symlinks/plugins/google_maps_flutter/ios`)
   - location (from `Pods/.symlinks/plugins/location/ios`)
 
@@ -206,7 +206,7 @@ EXTERNAL SOURCES:
   firebase_messaging:
     :path: Pods/.symlinks/plugins/firebase_messaging/ios
   Flutter:
-    :path: Pods/.symlinks/flutter/ios
+    :path: Pods/.symlinks/flutter/ios-release
   google_maps_flutter:
     :path: Pods/.symlinks/plugins/google_maps_flutter/ios
   location:
