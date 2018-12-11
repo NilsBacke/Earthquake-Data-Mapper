@@ -3,7 +3,8 @@
 <a href='https://play.google.com/store/apps/details?id=com.plushundred.earthquakedatamapper&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="30%"/></a>
 
 <div class="center">
-    <img width="359" height="693" src="screenshots/screenshot1.jpg">
+    <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot1.png">
+    <img width="359" height="693" src="screenshots/V1.1 Android/screenshot1.jpg">
   </div>
 
 
@@ -46,9 +47,21 @@ An about page
 
 # More Screenshots
 
-<img width="359" height="693" src="screenshots/screenshot2.jpg">
-<img width="359" height="693" src="screenshots/screenshot3.jpg">
-<img width="359" height="693" src="screenshots/screenshot4.jpg">
-<img width="359" height="693" src="screenshots/screenshot5.jpg">
+<div class="center">
+    <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot2.png">
+    <img width="359" height="693" src="screenshots/V1.1 Android/screenshot2.jpg">
+  </div>
+<div class="center">
+    <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot3.png">
+    <img width="359" height="693" src="screenshots/V1.1 Android/screenshot3.jpg">
+  </div>
+  <div class="center">
+    <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot4.png">
+    <img width="359" height="693" src="screenshots/V1.1 Android/screenshot4.jpg">
+  </div>
+  <div class="center">
+    <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot5.png">
+    <img width="359" height="693" src="screenshots/V1.1 Android/screenshot5.jpg">
+  </div>
 
 App icon made by Freepik from www.flaticon.com
