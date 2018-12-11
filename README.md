@@ -2,6 +2,7 @@
 
 <a href='https://play.google.com/store/apps/details?id=com.plushundred.earthquakedatamapper&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="30%"/></a>
 
+
 <div class="center">
     <img width="359" height="693" hspace="40" src="screenshots/V1 iOS/screenshot1.png">
     <img width="359" height="693" src="screenshots/V1.1 Android/screenshot1.jpg">
@@ -18,7 +19,7 @@ Become aware of the significant earthquakes happening around the world.
 
 
 
-# Features:
+# Features
 
 A map view filled with markers of all of the earthquakes that occurred today.
 
@@ -35,15 +36,23 @@ Internet connection and location services are required for Earthquake Data Mappe
 
 Earthquake Data Mapper is 100% free with no ads or in-app purchases!!!
 
+Recent updates:
+
+Added page dots to Most Significant Earthquakes list
+Added a settings page
+Modified color scheme
+General UI/UX improvements
+Overhaul of maps functionality
+Further adaptability to different screen sizes
+Static map improvements
 
 
-# What's to come:
+What's to come:
 
-Push notifications to be notified of new earthquakes - settings will be customizable.
-
-A settings page - for a customizable user experience.
+A count of the number of earthquakes that happened in the past hour and week, not just day.
 
 An about page
+
 
 # More Screenshots
 
