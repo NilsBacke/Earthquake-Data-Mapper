@@ -25,7 +25,7 @@ class _NearMeState extends State<NearMe> {
   EarthquakeData earthquakeData = new EarthquakeData();
   final _controller = TextEditingController();
 
-  int range = 200; // miles
+  int range = 250; // miles
 
   @override
   void initState() {
