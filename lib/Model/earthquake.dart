@@ -5,8 +5,8 @@ class Earthquake {
   String place;
   var time;
   final String url;
-  final double lat;
-  final double long;
+  final num lat;
+  final num long;
 
   Earthquake({this.mag, this.place, this.time, this.url, this.lat, this.long}) {
     time = _getTime(this.time);
