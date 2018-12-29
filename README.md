@@ -17,6 +17,8 @@ You can see a map of all of the earthquakes that happened today around the globe
 
 Become aware of the significant earthquakes happening around the world.
 
+Get push notifications of earthquakes that happen near you!
+
 
 
 # Features
@@ -45,6 +47,7 @@ General UI/UX improvements
 Overhaul of maps functionality
 Further adaptability to different screen sizes
 Static map improvements
+Push notifications that alert users if an earthquake happens near them
 
 
 What's to come:
@@ -52,6 +55,8 @@ What's to come:
 A count of the number of earthquakes that happened in the past hour and week, not just day.
 
 An about page
+
+A search option
 
 
 # More Screenshots
