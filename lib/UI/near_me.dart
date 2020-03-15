@@ -176,7 +176,7 @@ class _NearMeState extends State<NearMe> {
     List<Widget> widgets = new List<Widget>();
 
     var currentLocation = <String, double>{};
-    var location = new CurrentLocation();
+    var location = new Location();
     currentLocation = await location.getLocation();
     var homeLat = currentLocation['latitude'];
     var homeLon = currentLocation['longitude'];

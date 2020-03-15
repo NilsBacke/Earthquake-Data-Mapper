@@ -1,5 +1,6 @@
 name: earthquake_data_mapper
 description: A new Flutter project.
+version: 1.1.2+50
 
 dependencies:
   flutter:
@@ -8,17 +9,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.0
-  intl: "^0.15.4"
+  intl: '^0.15.4'
   # geolocation: "^0.2.1"
   # flutter_launcher_icons: "^0.5.2"
-  cloud_firestore: "^0.7.3"
+  cloud_firestore: '^0.7.3'
   firebase_core: any
   firebase_auth: any
   firebase_messaging: any
-  location: "^1.4.1"
+  location: '^1.4.1'
   auto_size_text: ^0.3.0
   google_maps_flutter: any
   http: ^0.12.0
+  firebase_admob: ^0.7.0
   # map_view: any
 
 dev_dependencies:
@@ -28,7 +30,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: false
-  image_path: "images/icon.png"
+  image_path: 'images/icon.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

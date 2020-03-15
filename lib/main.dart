@@ -2,9 +2,9 @@ import 'package:earthquake_data_mapper/UI/expansion_tile.dart';
 import 'package:earthquake_data_mapper/UI/header_card.dart';
 import 'package:earthquake_data_mapper/UI/most_sig_list.dart';
 import 'package:earthquake_data_mapper/UI/near_me.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:earthquake_data_mapper/Model/api_info.dart' as apiInfo;
 import 'package:earthquake_data_mapper/UI/settings_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:location/location.dart';
@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final Firestore db = Firestore.instance;
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+final ENV = 'prod';
 
 // Icon made by Freepik from www.flaticon.com
 
@@ -33,6 +34,7 @@ class _HomeState extends State<Home> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   var scaffoldKey = new GlobalKey<ScaffoldState>();
   List<Widget> homePageWidgets = new List();
+  BannerAd _bannerAd;
 
   @override
   void initState() {
@@ -49,6 +51,45 @@ class _HomeState extends State<Home> {
       homePageWidgets.add(new NearMe());
       homePageWidgets.add(new ExpansionList());
     });
+
+    FirebaseAdMob.instance.initialize(
+        appId: ENV == 'staging'
+            ? FirebaseAdMob.testAppId
+            : 'ca-app-pub-2682134172957549/3217764824');
+
+    MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+      keywords: <String>['earthquake', 'earthquake map'],
+      contentUrl: 'https://flutter.io',
+      childDirected: false,
+      testDevices: <String>[],
+    );
+
+    _bannerAd = BannerAd(
+      // Replace the testAdUnitId with an ad unit id from the AdMob dash.
+      // https://developers.google.com/admob/android/test-ads
+      // https://developers.google.com/admob/ios/test-ads
+      adUnitId: BannerAd.testAdUnitId,
+      size: AdSize.smartBanner,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        print("BannerAd event is $event");
+      },
+    );
+
+    _bannerAd
+      // typically this happens well before the ad is shown
+      ..load()
+      ..show(
+        anchorOffset: AppBar().preferredSize.height + 50,
+        // Banner Position
+        anchorType: AnchorType.top,
+      );
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   setUpFirebaseMessaging() async {
@@ -67,7 +108,7 @@ class _HomeState extends State<Home> {
   saveCurrentLocation(String token) async {
     var currentLocation = <String, double>{};
 
-    var location = new CurrentLocation();
+    var location = new Location();
 
     currentLocation = await location.getLocation();
 
@@ -149,7 +190,7 @@ class _HomeState extends State<Home> {
       ),
       body: new Container(
         // color: const Color(0xFF404040),
-        padding: EdgeInsets.symmetric(horizontal: 4.0),
+        padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 40.0),
         color: Colors.grey[350],
         child: new RefreshIndicator(
           key: refreshKey,
