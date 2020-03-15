@@ -72,7 +72,7 @@ class _MostSigListState extends State<MostSigList> {
             ),
             new ConstrainedBox(
               constraints: new BoxConstraints.tightFor(
-                height: 275,
+                height: 300,
               ),
               child: new PageView.builder(
                 physics: AlwaysScrollableScrollPhysics(),
