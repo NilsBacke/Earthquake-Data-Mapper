@@ -11,6 +11,9 @@ PODS:
     - Firebase/Database
     - Firebase/Firestore
     - Flutter
+  - Firebase/AdMob (5.11.0):
+    - Firebase/Core
+    - Google-Mobile-Ads-SDK (~> 7.35)
   - Firebase/Auth (5.11.0):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.0.4)
@@ -28,6 +31,10 @@ PODS:
   - Firebase/Messaging (5.11.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (= 3.2.1)
+  - firebase_admob (0.0.1):
+    - Firebase/AdMob
+    - Firebase/Core
+    - Flutter
   - firebase_auth (0.0.1):
     - Firebase/Auth
     - Firebase/Core
@@ -89,6 +96,7 @@ PODS:
     - GoogleUtilities/Reachability (~> 5.2)
     - Protobuf (~> 3.1)
   - Flutter (1.0.0)
+  - Google-Mobile-Ads-SDK (7.41.0)
   - google_maps_flutter (0.0.1):
     - Flutter
     - GoogleMaps
@@ -163,6 +171,7 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `Pods/.symlinks/plugins/cloud_firestore/ios`)
+  - firebase_admob (from `Pods/.symlinks/plugins/firebase_admob/ios`)
   - firebase_auth (from `Pods/.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `Pods/.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `Pods/.symlinks/plugins/firebase_messaging/ios`)
@@ -171,7 +180,7 @@ DEPENDENCIES:
   - location (from `Pods/.symlinks/plugins/location/ios`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - BoringSSL
     - Firebase
     - FirebaseAnalytics
@@ -195,10 +204,14 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+  trunk:
+    - Google-Mobile-Ads-SDK
 
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: Pods/.symlinks/plugins/cloud_firestore/ios
+  firebase_admob:
+    :path: Pods/.symlinks/plugins/firebase_admob/ios
   firebase_auth:
     :path: Pods/.symlinks/plugins/firebase_auth/ios
   firebase_core:
@@ -214,11 +227,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   BoringSSL: e10f92a27043805c01071fe815a5cd98ae8212e7
-  cloud_firestore: a2d49d9c7219fce31033eb1a2ee953d7733c91d6
+  cloud_firestore: c575f263eb7033afb7d407e6264b21d6e622a061
   Firebase: b48f9e653da971ecce5b8c749684bc8bb2d26bd3
-  firebase_auth: 27a5a77a032d557c18f8e223aaf8ec1368f6cdbc
-  firebase_core: c96aa8b2fcf7f5167d32f22034f502f9304952b8
-  firebase_messaging: a5f5d4a9491b660f33a1f94bd0596558f820bad1
+  firebase_admob: ba3d9c8874c03ccc2b87ae30c50d1630b522a693
+  firebase_auth: 6023fc2e28feabd6571d9a105b678cce7978be90
+  firebase_core: ce5006bb48508ee4e71e0f429a3f519bb8ee2961
+  firebase_messaging: b25b2fa94e685146bcf9d706ed87b4e95cd2a17d
   FirebaseAnalytics: 63202d2665de4e6adcbdce189135255d8b5962ba
   FirebaseAnalyticsInterop: e5f21be9af6548372e2f0815834ff909bff395a2
   FirebaseAuth: 504b198ceb3472dca5c65bb95544ea44cfc9439e
@@ -228,8 +242,9 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 162502df850b584126c609f3449acfb7230d8c1a
   FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
   FirebaseMessaging: 0f14a264b0d7f867e8eff5d3556bc5d0d4e57888
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  google_maps_flutter: 6449d5918d3f1a69a37dc9c557bbad7bb9bcf0e9
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Google-Mobile-Ads-SDK: 101ce89b94fdf60ec64ba7b6e9b9d812dc765936
+  google_maps_flutter: 924970f41ec509a201b593548db005efb2a09ee9
   GoogleAppMeasurement: 5029d78f2b438bd30ffb44e6c558b57c21622727
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   GoogleUtilities: abb092d2c12e817fa3e0e7b274987dd72fb86ec3
@@ -240,10 +255,10 @@ SPEC CHECKSUMS:
   gRPC-RxLibrary: 3c305f32155024b116b780f389323c73a28197e6
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
-  location: 26c90953ad5916331d0d1d913898779910416487
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
 
 PODFILE CHECKSUM: 13dcf421f4da2e937a57e8ba760ed880beae536f
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.4

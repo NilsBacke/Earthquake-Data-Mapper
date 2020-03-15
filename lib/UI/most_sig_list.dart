@@ -72,13 +72,8 @@ class _MostSigListState extends State<MostSigList> {
             ),
             new ConstrainedBox(
               constraints: new BoxConstraints.tightFor(
-                  height: MediaQuery.of(context).size.height > 600
-                      ? MediaQuery.of(context).size.width > 400
-                          ? MediaQuery.of(context).size.width > 700
-                              ? MediaQuery.of(context).size.height * .45
-                              : MediaQuery.of(context).size.height * .4
-                          : MediaQuery.of(context).size.height * .35
-                      : MediaQuery.of(context).size.height * .41),
+                height: 275,
+              ),
               child: new PageView.builder(
                 physics: AlwaysScrollableScrollPhysics(),
                 controller: _controller,
