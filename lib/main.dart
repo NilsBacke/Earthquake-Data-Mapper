@@ -68,7 +68,9 @@ class _HomeState extends State<Home> {
       // Replace the testAdUnitId with an ad unit id from the AdMob dash.
       // https://developers.google.com/admob/android/test-ads
       // https://developers.google.com/admob/ios/test-ads
-      adUnitId: BannerAd.testAdUnitId,
+      adUnitId: ENV == 'staging'
+          ? BannerAd.testAdUnitId
+          : 'ca-app-pub-2682134172957549/3217764824',
       size: AdSize.smartBanner,
       targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
